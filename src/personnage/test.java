@@ -1,4 +1,4 @@
-package test;
+package personnage;
 
 public class test {
 
