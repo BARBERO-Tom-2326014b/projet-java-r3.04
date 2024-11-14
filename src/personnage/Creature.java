@@ -46,8 +46,14 @@ public abstract class Creature e {
     public int getMoral() {
         return moral;
     }
+    
+    
 
-    public List<String> getMaladies() {
+    public void setMoral(int moral) {
+		this.moral = moral;
+	}
+
+	public List<String> getMaladies() {
         return maladies;
     }
 

@@ -3,8 +3,8 @@ package personnage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Lycanthrope extends CreatureBestiale {
-    public Lycanthrope(String nomComplet, String sexe, double poids, double taille, int age) {
+public class HommeBete extends CreatureBestiale {
+    public HommeBete(String nomComplet, String sexe, double poids, double taille, int age) {
         super(nomComplet, sexe, poids, taille, age);
     }
 
