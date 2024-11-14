@@ -33,8 +33,13 @@ public class Vampire extends MortVivant implements VIP {
     @Override
     public boolean estMort() {
         if (super.estMort()) {
+<<<<<<< HEAD
             // Appelle demoraliserAllies lors de la mort
             // Passer une liste d'alliés lorsque nécessaire
+=======
+            // Le vampire peut démoraliser ses alliés en trépassant
+            demoraliserAllies();
+>>>>>>> branch 'main' of git@github.com:BARBERO-Tom-2326014b/projet-java-r3.04.git
             return true;
         }
         return false;
