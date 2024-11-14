@@ -1,7 +1,7 @@
 package personnage;
 
 public class ServiceMedicalStandard extends ServiceMedical{
-	public ServiceMedicalStandard(String nom, double superficie, int capaciteMax, String budget) {
+	public ServiceMedicalStandard(String nom, double superficie, int capaciteMax, double budget) {
         super(nom, superficie, capaciteMax, budget);
     }
 

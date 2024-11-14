@@ -42,6 +42,10 @@ abstract class ServiceMedical {
     public List<Creature> getCreatures() {
         return creatures;
     }
+    
+    public int getNombreCreatures() {
+    	return creatures.size();
+    }
 
     public void afficherCaracteristiques() {
         System.out.println("Nom: " + nom);
