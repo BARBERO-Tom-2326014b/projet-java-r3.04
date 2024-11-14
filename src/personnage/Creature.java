@@ -2,7 +2,7 @@ package personnage;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Creature e {
+public abstract class Creature {
     private String nomComplet;
     private String sexe;
     private double poids;

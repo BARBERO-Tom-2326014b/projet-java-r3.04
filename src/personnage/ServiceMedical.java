@@ -49,18 +49,10 @@ abstract class ServiceMedical {
         System.out.println("Capacité max: " + capaciteMax);
         System.out.println("Budget: " + budget);
         System.out.println("Nombre de créatures présentes: " + creatures.size());
-        for (Creature creature : creatures) {
-            creature.afficherCaracteristiques();
-        }
-    }
-
-    public boolean ajouterCreature(Creature creature) {
-        if (creatures.size() < capaciteMax) {
-            creatures.add(creature);
-            return true;
-        } else {
-            System.out.println("Le service est plein.");
-            return false;
+        for (Creature creature : getCreatures()) {
+            System.out.println("Créature : " + creature.getNomComplet());
+            System.out.println("Moral: " + creature.getMoral());
+            System.out.println("Maladies: " + creature.getMaladies());
         }
     }
 
@@ -68,9 +60,20 @@ abstract class ServiceMedical {
         creatures.remove(creature);
     }
 
+    public boolean ajouterCreature(Creature creature) {
+        if (getCreatures().size() < getCapaciteMax()) {
+            getCreatures().add(creature);
+            return true;
+        }
+        else {
+            System.out.println("Le service est plein.");
+            return false;
+        }
+    }
+
     public void soignerCreatures() {
-        for (Creature creature : creatures) {
-            creature.seSoigner();
+        for (Creature creature : getCreatures()) {
+            creature.etreSoignee();
         }
     }
 
