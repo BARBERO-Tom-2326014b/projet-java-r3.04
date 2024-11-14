@@ -1,6 +1,7 @@
 package personnage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public abstract class Creature {
     private String nomComplet;
@@ -21,6 +22,7 @@ public abstract class Creature {
         this.moral = 100; // Moral initial, supposons qu'il commence à 100
         this.maladies = new ArrayList<>();
     }
+    protected abstract boolean estVIP();
 
     // Getters et Setters
     public String getNomComplet() {
@@ -69,6 +71,44 @@ public abstract class Creature {
         }
         
     }
+    
+    public void attendre(List<Creature> proches) {
+        if (peutAttendrePatiemment(proches)) {
+            moral -= 5; // Diminution du moral plus lente
+        } else if (estVIP()) {
+            moral -= 15; // Diminution plus rapide pour les VIP
+        } else {
+            moral -= 10; // Diminution normale
+        }
+        
+        if (moral < 0) moral = 0;
+        System.out.println(nomComplet + " attend... Moral actuel : " + moral);
+        
+        if (moral == 0) {
+            sEmporter(proches);
+        }
+    }
+    
+    public void sEmporter(List<Creature> proches) {
+        System.out.println(nomComplet + " s'emporte avec fureur !");
+        contaminerAutres(proches);
+    }
+    // Contamine une autre créature aléatoire
+    private void contaminerAutres(List<Creature> proches) {
+        if (!maladies.isEmpty() && !proches.isEmpty()) {
+            Creature cible = proches.get(new Random().nextInt(proches.size()));
+            String maladie = maladies.get(new Random().nextInt(maladies.size()));
+            cible.tomberMalade(maladie);
+            System.out.println(nomComplet + " contamine " + cible.getNomComplet() + " avec " + maladie + " en s'emportant.");
+        }
+    }
+
+  
+
+
+    // Vérifie si la créature peut attendre plus patiemment
+    protected abstract boolean peutAttendrePatiemment(List<Creature> proches);
+
     
     public void hurler() {
         System.out.println(nomComplet + " hurle de désespoir !");
