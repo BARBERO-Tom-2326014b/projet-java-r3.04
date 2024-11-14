@@ -4,7 +4,7 @@ class Crypte extends ServiceMedical {
     private int niveauVentilation;
     private double temperature;
 
-    public Crypte(String nom, double superficie, int capaciteMax, String budget, int niveauVentilation, double temperature) {
+    public Crypte(String nom, double superficie, int capaciteMax, double budget, int niveauVentilation, double temperature) {
         super(nom, superficie, capaciteMax, budget);
         this.niveauVentilation = niveauVentilation;
         this.temperature = temperature;
