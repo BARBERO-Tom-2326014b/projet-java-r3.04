@@ -8,7 +8,7 @@ public class Vampire extends MortVivant {
     @Override
     public boolean estMort() {
         if (super.estMort()) {
-            // Le vampire pourrait également démoraliser ses alliés en trépassant
+            // Le vampire peut démoraliser ses alliés en trépassant
             demoraliserAllies();
             return true;
         }

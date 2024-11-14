@@ -9,9 +9,9 @@ abstract class ServiceMedical {
     private double superficie;
     private int capaciteMax;
     private List<Creature> creatures;
-    private String budget;
+    private double budget;
 
-    public ServiceMedical(String nom, double superficie, int capaciteMax, String budget) {
+    public ServiceMedical(String nom, double superficie, int capaciteMax, double budget) {
         this.nom = nom;
         this.superficie = superficie;
         this.capaciteMax = capaciteMax;
@@ -31,11 +31,11 @@ abstract class ServiceMedical {
         return capaciteMax;
     }
 
-    public String getBudget() {
+    public double getBudget() {
         return budget;
     }
 
-    public void setBudget(String budget) {
+    public void setBudget(double budget) {
         this.budget = budget;
     }
 
