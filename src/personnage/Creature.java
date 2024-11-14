@@ -2,7 +2,7 @@ package personnage;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Creature {
+public abstract class Creature e {
     private String nomComplet;
     private String sexe;
     private double poids;
@@ -52,12 +52,16 @@ public abstract class Creature {
     }
 
     public void attendre() {
+    	 int chance = (int)(Math.random() * 1);
+         System.out.println(chance);
         moral -= 10;
         if (moral < 0) moral = 0;
         System.out.println(nomComplet + " attend... Moral actuel : " + moral);
+        if (moral<30 && chance == 1)
         if (moral == 0) {
             hurler();
         }
+        
     }
     
     public void hurler() {
