@@ -10,7 +10,7 @@ public abstract class Creature {
     private double taille;
     private int age;
     private int moral;//donne la plus importante
-    private List<String> maladies;
+    private List<Maladie> maladies;
 
     // Constructeur de base
     public Creature(String nomComplet, String sexe, double poids, double taille, int age) {
@@ -55,7 +55,7 @@ public abstract class Creature {
 		this.moral = moral;
 	}
 
-	public List<String> getMaladies() {
+	public List<Maladie> getMaladies() {
         return maladies;
     }
 
@@ -82,7 +82,7 @@ public abstract class Creature {
     private void contaminerAutres(List<Creature> proches) {
         if (!maladies.isEmpty() && !proches.isEmpty()) {
             Creature cible = proches.get(new Random().nextInt(proches.size()));
-            String maladie = maladies.get(new Random().nextInt(maladies.size()));
+            Maladie maladie = maladies.get(new Random().nextInt(maladies.size()));
             cible.tomberMalade(maladie);
             System.out.println(nomComplet + " contamine " + cible.getNomComplet() + " avec " + maladie + " en s'emportant.");
         }
@@ -104,16 +104,19 @@ public abstract class Creature {
     }
 
     // Tomber malade : ajoute une maladie
-    public void tomberMalade(String maladie) {
+    public void tomberMalade(Maladie maladie) {
         maladies.add(maladie);
         moral -= 5; // Chute du moral à chaque nouvelle maladie
         System.out.println(nomComplet + " tombe malade de " + maladie + ". Moral : " + moral);
+        if (maladie.estLetale()) {
+            System.out.println(nomComplet + " est en danger immédiat à cause de " + maladie.getNomComplet() + " !");
+        }
     }
 
     // Être soignée : soigne une maladie et augmente le moral
     public void etreSoignee() {
         if (!maladies.isEmpty()) {
-            String maladieSoignee = maladies.remove(0);
+        	Maladie maladieSoignee = maladies.remove(0);
             moral += 20;
             System.out.println(nomComplet + " est soigné de " + maladieSoignee + ". Moral : " + moral);
         } else {
@@ -121,12 +124,19 @@ public abstract class Creature {
         }
     }
 
-    // Trépasser : lorsque le nombre de maladies est trop élevé
+    // Trépasser : lorsque le nombre de maladies est trop élevé ou maladie létale
     public boolean estMort() {
-        if (maladies.size() > 5) { // Critère de trépas : 5 maladies
-            System.out.println(nomComplet + " a trépassé à cause de ses maladies.");
+        for (Maladie maladie : maladies) {
+            if (maladie.estLetale()) { // Si une maladie est létale
+                System.out.println(nomComplet + " a trépassé à cause de " + maladie.getNomComplet() + ".");
+                return true;
+            }
+        }
+        if (maladies.size() > 5) { // Ou s'il y a trop de maladies
+            System.out.println(nomComplet + " a trépassé à cause du trop grand nombre de maladies.");
             return true;
         }
         return false;
     }
+
 }
