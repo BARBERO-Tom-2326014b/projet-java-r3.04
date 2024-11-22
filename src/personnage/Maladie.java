@@ -28,7 +28,7 @@ public class Maladie {
     }
 
     public void setNiveauActuel(int niveau) {
-        this.niveauActuel = Math.max(1, Math.min(niveau, niveauMax)); // Bornage du niveau entre 1 et niveauMax
+        this.niveauActuel = niveauActuel +1;
     }
 
     public int getNiveauMax() {
@@ -54,44 +54,42 @@ public class Maladie {
     public String toString() {
         return nomComplet + " (" + nomAbrege + ") - Niveau: " + niveauActuel + "/" + niveauMax;
     }
-    
-    public class MaladieDebilitanteChronique extends Maladie {
+/*
+    // Classes internes rendues statiques
+    public static class MaladieDebilitanteChronique extends Maladie {
         public MaladieDebilitanteChronique() {
             super("Maladie Débilitante Chronique", "MDC", 10);
         }
-
-        
     }
 
-    public class SyndromeFOMO extends Maladie {
+    public static class SyndromeFOMO extends Maladie {
         public SyndromeFOMO() {
             super("Syndrome Fear of Missing Out", "FOMO", 5);
         }
     }
 
-    public class DependenceAuxReseauxSociaux extends Maladie {
+    public static class DependenceAuxReseauxSociaux extends Maladie {
         public DependenceAuxReseauxSociaux() {
             super("Dépendance aux Réseaux Sociaux", "DRS", 7);
         }
     }
 
-    public class PorphyrieErythropoïétiqueCongénitale extends Maladie {
-        public PorphyrieErythropoïétiqueCongénitale() {
+    public static class PorphyrieErythropoïetiqueCongenitale extends Maladie {
+        public PorphyrieErythropoïetiqueCongenitale() {
             super("Porphyrie érythropoïétique congénitale", "PEC", 3);
         }
     }
-    
-    public class ZoopathieParaphréniqueLycanthropique extends Maladie {
-        public ZoopathieParaphréniqueLycanthropique() {
+
+    public static class ZoopathieParaphreniqueLycanthropique extends Maladie {
+        public ZoopathieParaphreniqueLycanthropique() {
             super("Zoopathie paraphrénique lycanthropique", "ZPL", 8);
         }
     }
-    
-    public class NarcolepsieDéliranteMaléfiqueAutoDestructrice extends Maladie {
-        public NarcolepsieDéliranteMaléfiqueAutoDestructrice() {
+
+    public static class NarcolepsieDeliranteMalefiqueAutoDestructrice extends Maladie {
+        public NarcolepsieDeliranteMalefiqueAutoDestructrice() {
             super("Narcolepsie délirante maléfique auto-destructrice", "NDMAD", 6);
         }
     }
-
+    */
 }
-

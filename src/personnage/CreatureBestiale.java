@@ -12,7 +12,7 @@ public abstract class CreatureBestiale extends Creature {
     protected void contaminerAllie(List<Creature> allies) {
         if (!getMaladies().isEmpty() && !allies.isEmpty()) {
             // Choisit une maladie aléatoire de la liste de maladies de la créature
-            String maladie = getMaladies().get(new Random().nextInt(getMaladies().size()));
+            Maladie maladie = getMaladies().get(new Random().nextInt(getMaladies().size()));
             // Sélectionne un allié aléatoire pour transmettre la maladie
             Creature allie = allies.get(new Random().nextInt(allies.size()));
             allie.tomberMalade(maladie);
