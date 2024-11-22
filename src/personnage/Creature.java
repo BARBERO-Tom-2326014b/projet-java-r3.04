@@ -11,6 +11,7 @@ public abstract class Creature {
     private int age;
     private int moral;//donne la plus importante
     private List<Maladie> maladies;
+    private int hurlementsConsecutifs = 0; // Compteur de hurlements consécutifs
 
     // Constructeur de base
     public Creature(String nomComplet, String sexe, double poids, double taille, int age) {
@@ -74,10 +75,7 @@ public abstract class Creature {
     
     
     
-    public void sEmporter(List<Creature> proches) {
-        System.out.println(nomComplet + " s'emporte avec fureur !");
-        contaminerAutres(proches);
-    }
+    /*
     // Contamine une autre créature aléatoire
     private void contaminerAutres(List<Creature> proches) {
         if (!maladies.isEmpty() && !proches.isEmpty()) {
@@ -87,7 +85,7 @@ public abstract class Creature {
             System.out.println(nomComplet + " contamine " + cible.getNomComplet() + " avec " + maladie + " en s'emportant.");
         }
     }
-
+	*/
   
 
 
@@ -95,18 +93,26 @@ public abstract class Creature {
 
     
     public void hurler() {
+    	if (hurlementsConsecutifs>1) {
+    		sEmporter();
+    	}  
+    	else if (moral <= 10) {
         System.out.println(nomComplet + " hurle de désespoir !");
+        hurlementsConsecutifs++;
+    	}
     }
 
     // S’emporter : alternative aux hurlements consécutifs
     public void sEmporter() {
-        System.out.println(nomComplet + " s'emporte avec fureur !");
+    	if (hurlementsConsecutifs>1) {
+    		System.out.println(nomComplet + " s'emporte avec fureur !");
+    	}   
     }
 
     // Tomber malade : ajoute une maladie
     public void tomberMalade(Maladie maladie) {
         maladies.add(maladie);
-        moral -= 5; // Chute du moral à chaque nouvelle maladie
+        moral -= 30; // Chute du moral à chaque nouvelle maladie
         System.out.println(nomComplet + " tombe malade de " + maladie + ". Moral : " + moral);
         if (maladie.estLetale()) {
             System.out.println(nomComplet + " est en danger immédiat à cause de " + maladie.getNomComplet() + " !");

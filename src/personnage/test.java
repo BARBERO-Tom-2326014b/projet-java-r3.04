@@ -23,14 +23,14 @@ public class test {
         
      // 3. Hurler si le moral est bas
         System.out.println("\n=== Test 3: Hurler si le moral est bas ===");
+        elfe.hurler();//ne doit pas hurler car moral > 10 
         elfe.setMoral(5); 
         elfe.hurler();
         
      // 4. S’emporter si hurlements consécutifs
         System.out.println("\n=== Test 4: S’emporter ==="); 
-        orque.hurler(); 
-        orque.hurler(); 
-        orque.sEmporter();
+        elfe.hurler(); 
+        elfe.hurler(); 
         
      // 5. Tomber malade
         System.out.println("\n=== Test 5: Tomber malade ===");
