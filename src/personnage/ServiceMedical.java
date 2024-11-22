@@ -137,25 +137,25 @@ abstract class ServiceMedical {
         String maladieNom = maladies[new Random().nextInt(maladies.length)];
         
         // Créer l'objet maladie correspondant
-        
+        Maladie maladie = null;
         switch (maladieNom) {
             case "MDC":
-                Maladie maladie = Maladie.creerMaladie("MDC")
+                maladie = Maladie.creerMaladie("MDC");
                 break;
             case "FOMO":
-                maladie = new Maladie.SyndromeFOMO();
+            	maladie = Maladie.creerMaladie("FOMO");
                 break;
             case "DRS":
-                maladie = new Maladie.DependenceAuxReseauxSociaux();
+            	maladie = Maladie.creerMaladie("DRS");
                 break;
             case "PEC":
-                maladie = new Maladie.PorphyrieErythropoïetiqueCongenitale();
+            	maladie = Maladie.creerMaladie("PEC");
                 break;
             case "ZPL":
-                maladie = new Maladie.ZoopathieParaphreniqueLycanthropique();
+            	maladie = Maladie.creerMaladie("ZPL");
                 break;
             case "NDMAD":
-                maladie = new Maladie.NarcolepsieDeliranteMalefiqueAutoDestructrice();
+            	maladie = Maladie.creerMaladie("NDMAD");
                 break;
         }
 
