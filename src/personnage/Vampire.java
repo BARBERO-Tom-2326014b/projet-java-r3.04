@@ -14,6 +14,7 @@ public class Vampire extends MortVivant implements VIP {
         System.out.println(getNomComplet() + " perd rapidement du moral. Moral actuel : " + getMoral());
     }
 
+    /*
     @Override
     public void attendre(List<Creature> proches) {
         if (getMoral() > 0) {
@@ -21,7 +22,7 @@ public class Vampire extends MortVivant implements VIP {
         }
         super.attendre(proches); // Appel à la méthode attendre de Creature
     }
-
+*/
     // Méthode pour démoraliser les alliés à la mort
     private void demoraliserAllies(List<Creature> allies) {
         System.out.println(getNomComplet() + " démoralise ses alliés en trépassant.");
@@ -29,7 +30,8 @@ public class Vampire extends MortVivant implements VIP {
             ally.setMoral(ally.getMoral() - 10); // Exemple : diminue le moral des alliés
         }
     }
-
+}
+/*
     @Override
     public boolean estMort() {
         if (super.estMort()) {
@@ -44,4 +46,4 @@ public class Vampire extends MortVivant implements VIP {
         }
         return false;
     }
-}
+} */

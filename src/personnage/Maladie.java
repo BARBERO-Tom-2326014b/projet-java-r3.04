@@ -28,7 +28,7 @@ public class Maladie {
     }
 
     public void setNiveauActuel(int niveau) {
-        this.niveauActuel = Math.max(1, Math.min(niveau, niveauMax)); // Bornage du niveau entre 1 et niveauMax
+        this.niveauActuel = niveauActuel +1;
     }
 
     public int getNiveauMax() {
@@ -54,7 +54,6 @@ public class Maladie {
     public String toString() {
         return nomComplet + " (" + nomAbrege + ") - Niveau: " + niveauActuel + "/" + niveauMax;
     }
-
     // Fabrique de maladies prédéfinies
     public static Maladie creerMaladie(String type) {
         switch (type) {

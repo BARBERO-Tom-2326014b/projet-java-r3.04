@@ -75,24 +75,81 @@ public class HopitalFantastique {
         }
         return total;
     }
-// TODO, relire le sujet et adapté cette fonction  
+    
+    public List<ServiceMedicalStandard> listerServices() {
+        List<ServiceMedicalStandard> servicesStandard = new ArrayList<>();
+        for (ServiceMedical service : servicesMedicals) {
+            if (service instanceof ServiceMedicalStandard) {
+                servicesStandard.add((ServiceMedicalStandard) service);
+            }
+        }
+        return servicesStandard;
+    }
+    
     // Méthode pour modéliser l'aspect temporel et passer la main aux médecins
+    //
     public void gestionTemps(int intervalle) {
         Random rand = new Random();
+
         for (int i = 0; i < intervalle; i++) {
-            // Modifier aléatoirement l'état des créatures et des services médicaux
+            // Création des threads pour les services médicaux
+            List<Thread> threadsServices = new ArrayList<>();
             for (ServiceMedical service : servicesMedicals) {
-                service.modifierEtatCreatures(service.getCreatures());
-                service.modifierEtatService();
+                Runnable serviceTask = () -> {
+                    service.modifierEtatCreatures(service.getCreatures());
+                    service.modifierEtatService();
+                };
+                threadsServices.add(new Thread(serviceTask));
             }
 
-            // Passer la main aux médecins pour qu'ils effectuent des actions
+            // Création des threads pour les actions des médecins
+            List<Thread> threadsMedecins = new ArrayList<>();
             for (Medecin medecin : medecins) {
-                medecin.effectuerActions(rand, servicesMedicals);
+                Runnable medecinTask = () -> {
+                    synchronized (this) { // Synchronisation si nécessaire
+                        medecin.effectuerActions(rand, servicesMedicals);
+                    }
+                };
+                threadsMedecins.add(new Thread(medecinTask));
+            }
+
+            // Démarrage de tous les threads des services médicaux
+            for (Thread thread : threadsServices) {
+                thread.start();
+            }
+
+            // Démarrage de tous les threads des médecins
+            for (Thread thread : threadsMedecins) {
+                thread.start();
+            }
+
+            // Attendre que tous les threads des services médicaux se terminent
+            for (Thread thread : threadsServices) {
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            // Attendre que tous les threads des médecins se terminent
+            for (Thread thread : threadsMedecins) {
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
             // Afficher les statistiques après chaque intervalle
             afficherStatistiques();
+
+            // Pause entre les intervalles si nécessaire
+            try {
+                Thread.sleep(200); // Pause de 200 ms pour simuler un délai
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
