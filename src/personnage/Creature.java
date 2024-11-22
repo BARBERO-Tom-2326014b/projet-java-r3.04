@@ -60,7 +60,7 @@ public abstract class Creature {
         return maladies;
     }
 
-    public void attendre() {
+    public void attendre(List<Creature> proches) {
     	 int chance = (int)(Math.random() * 1);
          System.out.println(chance);
         moral -= 10;
@@ -68,33 +68,14 @@ public abstract class Creature {
         System.out.println(nomComplet + " attend... Moral actuel : " + moral);
         if (moral<30 && chance == 1)
         if (moral == 0) {
-            hurler();
+            hurler(proches);
         }
         
     }
     
-    
-    
-    /*
-    // Contamine une autre créature aléatoire
-    private void contaminerAutres(List<Creature> proches) {
-        if (!maladies.isEmpty() && !proches.isEmpty()) {
-            Creature cible = proches.get(new Random().nextInt(proches.size()));
-            Maladie maladie = maladies.get(new Random().nextInt(maladies.size()));
-            cible.tomberMalade(maladie);
-            System.out.println(nomComplet + " contamine " + cible.getNomComplet() + " avec " + maladie + " en s'emportant.");
-        }
-    }
-	*/
-  
-
-
-    
-
-    
-    public void hurler() {
+    public void hurler(List<Creature> proches) {
     	if (hurlementsConsecutifs>1) {
-    		sEmporter();
+    		sEmporter(proches);
     	}  
     	else if (moral <= 10) {
         System.out.println(nomComplet + " hurle de désespoir !");
@@ -103,10 +84,25 @@ public abstract class Creature {
     }
 
     // S’emporter : alternative aux hurlements consécutifs
-    public void sEmporter() {
+    public void sEmporter(List<Creature> proches) {
     	if (hurlementsConsecutifs>1) {
     		System.out.println(nomComplet + " s'emporte avec fureur !");
     	}   
+    	// Ajout d'une chance de contamination
+        double chanceDeContamination = Math.random(); // Génère un nombre entre 0 et 1
+        if (chanceDeContamination > 0.01 && !proches.isEmpty()) { // 75% de chance de contaminer
+            contaminerAutres(proches);
+        }
+    }
+    
+ // Contamine une autre créature aléatoire
+    private void contaminerAutres(List<Creature> proches) {
+        if (!maladies.isEmpty() && !proches.isEmpty()) {
+            Creature cible = proches.get(new Random().nextInt(proches.size()));
+            Maladie maladie = maladies.get(new Random().nextInt(maladies.size()));
+            cible.tomberMalade(maladie);
+            System.out.println(nomComplet + " contamine " + cible.getNomComplet() + " avec " + maladie + " en s'emportant.");
+        }
     }
 
     // Tomber malade : ajoute une maladie
