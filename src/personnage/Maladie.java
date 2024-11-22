@@ -6,7 +6,7 @@ public class Maladie {
     private int niveauActuel;
     private int niveauMax;
 
-    // Constructeur
+    
     public Maladie(String nomComplet, String nomAbrege, int niveauMax) {
         this.nomComplet = nomComplet;
         this.nomAbrege = nomAbrege;
@@ -47,49 +47,30 @@ public class Maladie {
 
     // Vérifie si la maladie est létale
     public boolean estLetale() {
-        return niveauActuel >= niveauMax;
+    	return niveauActuel >= niveauMax;
     }
 
     @Override
     public String toString() {
         return nomComplet + " (" + nomAbrege + ") - Niveau: " + niveauActuel + "/" + niveauMax;
     }
-/*
-    // Classes internes rendues statiques
-    public static class MaladieDebilitanteChronique extends Maladie {
-        public MaladieDebilitanteChronique() {
-            super("Maladie Débilitante Chronique", "MDC", 10);
+    // Fabrique de maladies prédéfinies
+    public static Maladie creerMaladie(String type) {
+        switch (type) {
+            case "MDC":
+                return new Maladie("Maladie Débilitante Chronique", "MDC", 10);
+            case "FOMO":
+                return new Maladie("Syndrome Fear of Missing Out", "FOMO", 5);
+            case "DRS":
+                return new Maladie("Dépendance aux Réseaux Sociaux", "DRS", 7);
+            case "PEC":
+                return new Maladie("Porphyrie érythropoïétique congénitale", "PEC", 3);
+            case "ZPL":
+                return new Maladie("Zoopathie paraphrénique lycanthropique", "ZPL", 8);
+            case "NDMAD":
+                return new Maladie("Narcolepsie délirante maléfique auto-destructrice", "NDMAD", 6);
+            default:
+                throw new IllegalArgumentException("Type de maladie inconnu : " + type);
         }
     }
-
-    public static class SyndromeFOMO extends Maladie {
-        public SyndromeFOMO() {
-            super("Syndrome Fear of Missing Out", "FOMO", 5);
-        }
-    }
-
-    public static class DependenceAuxReseauxSociaux extends Maladie {
-        public DependenceAuxReseauxSociaux() {
-            super("Dépendance aux Réseaux Sociaux", "DRS", 7);
-        }
-    }
-
-    public static class PorphyrieErythropoïetiqueCongenitale extends Maladie {
-        public PorphyrieErythropoïetiqueCongenitale() {
-            super("Porphyrie érythropoïétique congénitale", "PEC", 3);
-        }
-    }
-
-    public static class ZoopathieParaphreniqueLycanthropique extends Maladie {
-        public ZoopathieParaphreniqueLycanthropique() {
-            super("Zoopathie paraphrénique lycanthropique", "ZPL", 8);
-        }
-    }
-
-    public static class NarcolepsieDeliranteMalefiqueAutoDestructrice extends Maladie {
-        public NarcolepsieDeliranteMalefiqueAutoDestructrice() {
-            super("Narcolepsie délirante maléfique auto-destructrice", "NDMAD", 6);
-        }
-    }
-    */
 }
