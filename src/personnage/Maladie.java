@@ -28,7 +28,7 @@ public class Maladie {
     }
 
     public void setNiveauActuel(int niveau) {
-        this.niveauActuel = niveauActuel +1;
+        this.niveauActuel = niveau;
     }
 
     public int getNiveauMax() {
@@ -47,7 +47,7 @@ public class Maladie {
 
     // Vérifie si la maladie est létale
     public boolean estLetale() {
-    	return niveauActuel >= niveauMax;
+    	return this.niveauActuel >= this.niveauMax;
     }
 
     @Override
