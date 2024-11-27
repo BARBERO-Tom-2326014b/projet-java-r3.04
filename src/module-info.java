@@ -4,5 +4,5 @@
 /**
  * 
  */
-module devApplication {
+module ProjetTpJava {
 }

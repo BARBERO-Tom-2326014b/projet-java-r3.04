@@ -88,10 +88,21 @@ public abstract class Creature {
     	if (hurlementsConsecutifs>1) {
     		System.out.println(nomComplet + " s'emporte avec fureur !");
     	}   
+    	else {
+            System.out.println(nomComplet + " ne peut pas s'emporter car il n'a pas assez hurlé (hurlementsConsecutifs = " + hurlementsConsecutifs + ").");
+        }
     	// Ajout d'une chance de contamination
         double chanceDeContamination = Math.random(); // Génère un nombre entre 0 et 1
-        if (chanceDeContamination > 0.01 && !proches.isEmpty()) { // 75% de chance de contaminer
+        if (chanceDeContamination > 0.25 && !proches.isEmpty()) { // 75% de chance de contaminer
             contaminerAutres(proches);
+        }
+        else {
+            if (chanceDeContamination <= 0.25) {
+                System.out.println("Pas de contamination cette fois (chanceDeContamination = " + chanceDeContamination + ").");
+            }
+            if (proches.isEmpty()) {
+                System.out.println("Aucune créature proche à contaminer.");
+            }
         }
     }
     
@@ -102,6 +113,9 @@ public abstract class Creature {
             Maladie maladie = maladies.get(new Random().nextInt(maladies.size()));
             cible.tomberMalade(maladie);
             System.out.println(nomComplet + " contamine " + cible.getNomComplet() + " avec " + maladie + " en s'emportant.");
+        }
+        else {
+        	System.out.println(nomComplet+" n'est pas malade donc ne contamine pas");
         }
     }
 

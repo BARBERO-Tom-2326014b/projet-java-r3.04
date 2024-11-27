@@ -66,8 +66,11 @@ public class test {
         
         // 8. S'emporter contamine proches
         System.out.println("\n=== Test 8: S'emporter contamine proches ===");
-        orque.hurler(proches);
-        orque.hurler(proches);
-        orque.sEmporter(proches);
+        loupG.setMoral(8);
+        Maladie zpl = Maladie.creerMaladie("ZPL");
+        loupG.tomberMalade(zpl);
+        loupG.hurler(proches);
+        loupG.hurler(proches);
+        loupG.sEmporter(proches);
 	}
 }
