@@ -90,6 +90,13 @@ public class Meute {
     public void setLycanthropes(List<Lycanthrope> lycanthropes) {
         this.lycanthropes = lycanthropes;
     }
-}
+
+	public void enleverLycanthropes(Lycanthrope l) {
+    			lycanthropes.remove(l);
+    		
+    	}
+		
+	}
+
 
 
