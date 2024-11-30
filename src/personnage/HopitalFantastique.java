@@ -93,70 +93,76 @@ public class HopitalFantastique {
         Random rand = new Random();
 
         for (int i = 0; i < intervalle; i++) {
+            // Liste pour stocker tous les threads
+            List<Thread> threads = new ArrayList<>();
+
             // Création des threads pour les services médicaux
-            List<Thread> threadsServices = new ArrayList<>();
-            
             for (ServiceMedical service : servicesMedicals) {
-                Runnable serviceTask = () -> {
-                    service.modifierEtatCreatures(service.getCreatures());
-                    service.modifierEtatService();
-                  	
-                };
-                threadsServices.add(new Thread(serviceTask));
+                Thread thread = new Thread(() -> {
+                    synchronized (this) {
+                        if (!perdu) { // Arrête les actions si perdu est déjà vrai
+                            service.modifierEtatCreatures(service.getCreatures());
+                            service.modifierEtatService();
+                        }
+                    }
+                });
+                threads.add(thread);
             }
-            for(ServiceMedical serviceX : servicesMedicals) {
-            	Runnable serviceTask = () -> {
-            		serviceX.maladieTropEvoluer(serviceX.getCreatures());
-            	};
-            	threadsServices.add(new Thread(serviceTask));
+
+            for (ServiceMedical serviceX : servicesMedicals) {
+                Thread thread = new Thread(() -> {
+                    synchronized (this) {
+                        if (!perdu) { // Vérifie si perdu est déjà vrai
+                            serviceX.maladieTropEvoluer(serviceX.getCreatures());
+                            if (serviceX.getAperdu()) {
+                                perdu = true;
+                                afficherMessagePerte(); // Affiche immédiatement le message
+                            }
+                        }
+                    }
+                });
+                threads.add(thread);
             }
 
             // Création des threads pour les actions des médecins
-            List<Thread> threadsMedecins = new ArrayList<>();
             for (Medecin medecin : medecins) {
-                Runnable medecinTask = () -> {
-                    synchronized (this) { // Synchronisation si nécessaire
-                        medecin.effectuerActions(rand, servicesMedicals);
+                Thread thread = new Thread(() -> {
+                    synchronized (this) {
+                        if (!perdu) { // Vérifie si perdu est déjà vrai
+                            medecin.effectuerActions(rand, servicesMedicals);
+                        }
                     }
-                };
-                threadsMedecins.add(new Thread(medecinTask));
-                perdu = true;
+                });
+                threads.add(thread);
             }
 
-            // Démarrage de tous les threads des services médicaux
-            for (Thread thread : threadsServices) {
+            // Démarrage de tous les threads
+            for (Thread thread : threads) {
                 thread.start();
             }
 
-            // Démarrage de tous les threads des médecins
-            for (Thread thread : threadsMedecins) {
-                thread.start();
-            }
-
-            // Attendre que tous les threads des services médicaux se terminent
-            for (Thread thread : threadsServices) {
+            // Surveillance des threads et interruption immédiate en cas de perte
+            for (Thread thread : threads) {
                 try {
-                    thread.join();
+                    thread.join(); // Attend la fin des threads
+                    if (perdu) {
+                        // Interrompt tous les threads restants dès qu'une perte est détectée
+                        for (Thread t : threads) {
+                            t.interrupt();
+                        }
+                        break; // Arrête la boucle principale
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
 
-            // Attendre que tous les threads des médecins se terminent
-            for (Thread thread : threadsMedecins) {
-                try {
-                    thread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            if (perdu) {
+                break; // Arrête la boucle principale dès qu'une perte est détectée
             }
 
             // Afficher les statistiques après chaque intervalle
             afficherStatistiques();
-            if (perdu) {
-                afficherMessagePerte();
-                break; // Arrête la boucle après l'affichage
-            }
 
             // Pause entre les intervalles si nécessaire
             try {
@@ -166,6 +172,8 @@ public class HopitalFantastique {
             }
         }
     }
+
+
     
     private void afficherMessagePerte() {
         String message = "vous avez perdu";

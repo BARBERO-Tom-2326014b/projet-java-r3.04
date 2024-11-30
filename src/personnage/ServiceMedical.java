@@ -12,6 +12,7 @@ abstract class ServiceMedical {
     private int capaciteMax;
     private List<Creature> creatures;
     private double budget;
+    private boolean Aperdu = false;
 
     public ServiceMedical(String nom, double superficie, int capaciteMax, double budget) {
         this.nom = nom;
@@ -23,6 +24,14 @@ abstract class ServiceMedical {
 
     public String getNom() {
         return nom;
+    }
+    
+    public void setAperdu() {
+    	Aperdu = true;
+    }
+    
+    public boolean getAperdu() {
+    	return Aperdu;
     }
 
     public double getSuperficie() {
@@ -57,7 +66,11 @@ abstract class ServiceMedical {
             }
         }
         creatures.removeAll(ListeDesMorts);
+        if (ListeDesMorts.isEmpty() == false){
+        	setAperdu();
+        }
     }
+    
     
  // Méthode pour modifier l'état des créatures
     public static void modifierEtatCreatures(List<Creature> creatures) {
