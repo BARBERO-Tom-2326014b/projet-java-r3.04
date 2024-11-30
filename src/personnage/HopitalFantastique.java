@@ -7,6 +7,7 @@ public class HopitalFantastique {
     private int nombreMaxServices;
     private List<ServiceMedical> servicesMedicals;
     private List<Medecin> medecins;
+    private volatile boolean perdu = false;
 
     public HopitalFantastique(String nom, int nombreMaxServices) {
         this.nom = nom;
@@ -94,12 +95,20 @@ public class HopitalFantastique {
         for (int i = 0; i < intervalle; i++) {
             // Création des threads pour les services médicaux
             List<Thread> threadsServices = new ArrayList<>();
+            
             for (ServiceMedical service : servicesMedicals) {
                 Runnable serviceTask = () -> {
                     service.modifierEtatCreatures(service.getCreatures());
                     service.modifierEtatService();
+                  	
                 };
                 threadsServices.add(new Thread(serviceTask));
+            }
+            for(ServiceMedical serviceX : servicesMedicals) {
+            	Runnable serviceTask = () -> {
+            		serviceX.maladieTropEvoluer(serviceX.getCreatures());
+            	};
+            	threadsServices.add(new Thread(serviceTask));
             }
 
             // Création des threads pour les actions des médecins
@@ -111,6 +120,7 @@ public class HopitalFantastique {
                     }
                 };
                 threadsMedecins.add(new Thread(medecinTask));
+                perdu = true;
             }
 
             // Démarrage de tous les threads des services médicaux
@@ -143,6 +153,10 @@ public class HopitalFantastique {
 
             // Afficher les statistiques après chaque intervalle
             afficherStatistiques();
+            if (perdu) {
+                afficherMessagePerte();
+                break; // Arrête la boucle après l'affichage
+            }
 
             // Pause entre les intervalles si nécessaire
             try {
@@ -151,6 +165,28 @@ public class HopitalFantastique {
                 e.printStackTrace();
             }
         }
+    }
+    
+    private void afficherMessagePerte() {
+        String message = "vous avez perdu";
+        int largeur = message.length() + 6; // Ajuste la largeur du cadre en fonction du message
+
+        // Ligne supérieure du cadre
+        String bordure = "#".repeat(largeur);
+        System.out.println(bordure);
+
+        // Ligne vide avec des marges
+        System.out.println("#" + " ".repeat(largeur - 2) + "#");
+
+        // Ligne contenant le message centré
+        int espaces = (largeur - 2 - message.length()) / 2;
+        System.out.println("#" + " ".repeat(espaces) + message + " ".repeat(espaces) + "#");
+
+        // Ligne vide avec des marges
+        System.out.println("#" + " ".repeat(largeur - 2) + "#");
+
+        // Ligne inférieure du cadre
+        System.out.println(bordure);
     }
 
    

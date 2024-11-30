@@ -47,7 +47,11 @@ public class Medecin extends Creature {
     }
     
     public void effectuerActions(Random rand, List<ServiceMedical> services) {
+    	
         Scanner scanner = new Scanner(System.in);
+        for(ServiceMedical serviceX : services) {
+        	serviceX.maladieTropEvoluer(serviceX.getCreatures());
+        }
         System.out.println("\nChoisissez une action à effectuer :");
         System.out.println("1. Examiner un service médical");
         System.out.println("2. Soigner les créatures d'un service médical");

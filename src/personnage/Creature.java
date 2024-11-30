@@ -144,7 +144,7 @@ public abstract class Creature {
     public boolean estMort() {
         for (Maladie maladie : maladies) {
             if (maladie.estLetale()) { // Si une maladie est létale
-                System.out.println(nomComplet + " a trépassé à cause de " + maladie.getNomComplet() + ".");
+                System.out.println(".\n\n\n\n\n\n\n\n\n\n\n\n\n\n " +nomComplet + " a trépassé à cause de " + maladie.getNomComplet() + ".\n\n\n\n\n\n\n\n\n\n\n\n\n\n ");
                 return true;
             }
         }

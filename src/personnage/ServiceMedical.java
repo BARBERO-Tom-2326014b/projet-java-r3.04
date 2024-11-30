@@ -49,6 +49,16 @@ abstract class ServiceMedical {
     	return creatures.size();
     }
     
+    public void maladieTropEvoluer(List<Creature> creatures) {
+        List<Creature> ListeDesMorts = new ArrayList<>();
+        for (Creature creature : creatures) {
+            if (creature.estMort()) {
+            	ListeDesMorts.add(creature);
+            }
+        }
+        creatures.removeAll(ListeDesMorts);
+    }
+    
  // Méthode pour modifier l'état des créatures
     public static void modifierEtatCreatures(List<Creature> creatures) {
         Random random = new Random();
