@@ -7,14 +7,20 @@ public class HopitalFantastique {
     private int nombreMaxServices;
     private List<ServiceMedical> servicesMedicals;
     private List<Medecin> medecins;
-    private volatile boolean perdu = false;
+    public static boolean perdu = false;
+    private static List<Creature> ListeDeCreatureEnAttente;
 
     public HopitalFantastique(String nom, int nombreMaxServices) {
         this.nom = nom;
         this.nombreMaxServices = nombreMaxServices;
         this.servicesMedicals = new ArrayList<>();
         this.medecins = new ArrayList<>();
+        this.ListeDeCreatureEnAttente = new ArrayList<>();
     }
+    
+    public static List<Creature> getListeDeCreatureEnAttente() {
+		return ListeDeCreatureEnAttente;
+	}
 
     public void ajouterServiceMedical(ServiceMedical service) {
         if (servicesMedicals.size() < nombreMaxServices) {
@@ -43,6 +49,8 @@ public class HopitalFantastique {
 
         return creaturesDansHopital;
     }
+    
+    
     
     public void ajouterMedecin(Medecin medecin) {
         medecins.add(medecin);
@@ -77,6 +85,63 @@ public class HopitalFantastique {
         return total;
     }
     
+    public void ChanceDarriverCreature (List<Creature> ListeDeCreatureEnAttente) {
+    	Random random = new Random();
+    	int chance = random.nextInt(100); // 0 à 99 inclus
+
+        // Si le nombre est inférieur à 10 (10 % de chance)
+        if (chance < 10) {
+        	ajouterCreaturesAleatoires(ListeDeCreatureEnAttente);
+        }
+    	
+    }
+    
+    public static List<Creature> ajouterCreaturesAleatoires(List<Creature> ListeDeCreatureEnAttente) {
+        Random random = new Random();
+        
+
+        
+        int type = random.nextInt(5); // 0 = Elfe, 1 = Orque, 2 = Vampire, 3 = Zombie, 4 = Lycanthrope
+        Creature creature;
+
+        String nom = genererNom(random);
+        String sexe = random.nextBoolean() ? "M" : "F";
+        double poids = 50 + random.nextDouble() * 100; // 50 à 150 kg
+        double taille = 1.5 + random.nextDouble() * 0.8; // 1.5 à 2.3 mètres
+        int age = random.nextInt(300); // 0 à 300 ans
+
+        switch (type) {
+            case 0: // Elfe
+                creature = new Elfe(nom, sexe, poids, taille, age);
+                ListeDeCreatureEnAttente.add(creature);
+                return ListeDeCreatureEnAttente;
+            case 1: // Orque
+                creature = new Orque(nom, sexe, poids, taille, age);
+                ListeDeCreatureEnAttente.add(creature);
+                return ListeDeCreatureEnAttente;
+            case 2: // Vampire
+                creature = new Vampire(nom, sexe, poids, taille, age);
+                ListeDeCreatureEnAttente.add(creature);
+                return ListeDeCreatureEnAttente;
+            case 3: // Zombie
+                creature = new Zombie(nom, sexe, poids, taille, age);
+                ListeDeCreatureEnAttente.add(creature);
+                return ListeDeCreatureEnAttente;
+            case 4: // Lycanthrope
+                creature = new Lycanthrope(nom, sexe, poids, taille, age);
+                ListeDeCreatureEnAttente.add(creature);
+                return ListeDeCreatureEnAttente;
+            default:
+                throw new IllegalArgumentException("Type de créature inconnu : " + type);
+        }
+    }
+
+    // Génère un nom aléatoire (exemple simplifié)
+    private static String genererNom(Random random) {
+        String[] noms = {"Elena", "Eldar", "Grommash", "Thrall", "Vlad", "Luna", "Fenrir", "Tanya", "Zeke"};
+        return noms[random.nextInt(noms.length)];
+    }
+    
     public List<ServiceMedicalStandard> listerServices() {
         List<ServiceMedicalStandard> servicesStandard = new ArrayList<>();
         for (ServiceMedical service : servicesMedicals) {
@@ -91,6 +156,7 @@ public class HopitalFantastique {
     //
     public void gestionTemps(int intervalle) {
         Random rand = new Random();
+        
 
         for (int i = 0; i < intervalle; i++) {
             // Liste pour stocker tous les threads
@@ -103,6 +169,14 @@ public class HopitalFantastique {
                         if (!perdu) { // Arrête les actions si perdu est déjà vrai
                             service.modifierEtatCreatures(service.getCreatures());
                             service.modifierEtatService();
+                            ChanceDarriverCreature(ListeDeCreatureEnAttente);
+                            if(!ListeDeCreatureEnAttente.isEmpty()) {
+                                System.out.println("La liste des creatures en attente est :");
+                                for(Creature creatureEnAttente :  ListeDeCreatureEnAttente) {
+                                	System.out.println(creatureEnAttente.getNomComplet()); 
+                                }
+                            }
+
                         }
                     }
                 });
@@ -148,7 +222,8 @@ public class HopitalFantastique {
                     if (perdu) {
                         // Interrompt tous les threads restants dès qu'une perte est détectée
                         for (Thread t : threads) {
-                            t.interrupt();
+                            System.exit(1);
+                        	t.interrupt();
                         }
                         break; // Arrête la boucle principale
                     }
@@ -157,12 +232,8 @@ public class HopitalFantastique {
                 }
             }
 
-            if (perdu) {
-                break; // Arrête la boucle principale dès qu'une perte est détectée
-            }
-
             // Afficher les statistiques après chaque intervalle
-            afficherStatistiques();
+            //afficherStatistiques();
 
             // Pause entre les intervalles si nécessaire
             try {
