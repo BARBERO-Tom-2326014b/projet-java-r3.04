@@ -1,58 +1,60 @@
 package tp4;
 
+import java.util.Random;
+import java.util.Scanner;
+
+
 public class Main {
+	private static Random random = new Random();
     public static void main(String[] args) {
-        // Création de la colonie de lycanthropes
-        Colonie colonie = new Colonie("Colonie des Loups-Garous");
+    	
+        // Scanner pour l'entrée utilisateur
+        Scanner scanner = new Scanner(System.in);
+        boolean quitter = false;
 
-        // Création des lycanthropes avec des caractéristiques spécifiques
-        Lycanthrope lycanthrope1 = new Lycanthrope(true, "adulte", 90, 8.0f, "α", 15, 4.5f, "Meute des Loups", "Léo");
-        Lycanthrope lycanthrope2 = new Lycanthrope(false, "adulte", 75, 6.5f, "α", 12, 4.0f, "Meute des Loups", "Luna");
-        Lycanthrope lycanthrope3 = new Lycanthrope(true, "adulte", 70, 5.0f, "β", 6, 5.0f, "Meute des Loups", "Max");
-        Lycanthrope lycanthrope4 = new Lycanthrope(false, "jeune", 65, 4.8f, "β", 5, 5.2f, "Meute des Loups", "Mia");
-        Lycanthrope lycanthrope5 = new Lycanthrope(true, "vieux", 60, 7.0f, "γ", 9, 3.8f, "Meute des Loups", "Rex");
-        Lycanthrope lycanthrope6 = new Lycanthrope(false, "vieux", 55, 7.5f, "γ", 8, 4.0f, "Meute des Loups", "Eira");
-        Lycanthrope lycanthrope10 = new Lycanthrope(false, "adulte", 85, 7.5f, "γ", 8, 4.0f, "Meute des Loups", "Tommy");
+        System.out.println("Bienvenue dans Fantasy Hospital !");
+        while (!quitter) {
+            // Afficher le menu principal
+            System.out.println("\nQue souhaitez-vous faire ?");
+            System.out.println("1. Créer Lycanthropes");
+            System.out.println("2. Créer meute");
+            System.out.println("3. Créer colonie");
+            System.out.println("4. Quitter");
+            System.out.print("Votre choix : ");
 
-        // Création de la meute
-        Meute meuteDesLoups = new Meute("Meute des Loups");
+            int choix = scanner.nextInt();
+            scanner.nextLine(); // Consommer le saut de ligne
 
-        // Ajout des lycanthropes à la meute
-        meuteDesLoups.ajouterMembre(lycanthrope1);
-        meuteDesLoups.ajouterMembre(lycanthrope2);
-        meuteDesLoups.ajouterMembre(lycanthrope3);
-        meuteDesLoups.ajouterMembre(lycanthrope4);
-        meuteDesLoups.ajouterMembre(lycanthrope5);
-        meuteDesLoups.ajouterMembre(lycanthrope6);
-        meuteDesLoups.afficherLycanthropesDeLaMeute();
-
-        // Définir le couple alpha
-        meuteDesLoups.definirCoupleAlpha();
-
-       
-        meuteDesLoups.afficherLycanthropesDeLaMeute();
-
-        // Vérification de la présence de conflit de domination
-        if (meuteDesLoups.estConflitPresent()) {
-            System.out.println("\nUn conflit de domination est présent dans la meute.");
-        } else {
-            System.out.println("\nAucun conflit de domination dans la meute.");
+            switch (choix) {
+                case 1:
+                	System.out.println("Quel nom voulez-vous choisir ?");
+                    String Nom = scanner.nextLine();
+                    if(random.nextInt(3)==1) {
+                    Lycanthrope lycan = new Lycanthrope(false, random.nextInt(100), random.nextFloat(10),  random.nextInt(10), random.nextInt(10),Nom);
+                    lycan.afficherCaracteristiques();
+                    	}
+                    else {
+                    	Lycanthrope lycan = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10),  random.nextInt(10), random.nextInt(10),Nom);
+                    	lycan.afficherCaracteristiques();
+                    }
+                    
+                    
+                    break;
+                case 2:
+                	System.out.println("Quel nom voulez-vous choisir ?");
+                    String Nom1 = scanner.nextLine();
+                    if(random.nextInt(3)==1) {
+                    Lycanthrope lycan = new Lycanthrope(false, random.nextInt(100), random.nextFloat(10),  random.nextInt(10), random.nextInt(10),Nom1); 
+                    }
+                    break;
+                default:
+                    System.out.println("Choix invalide. Veuillez réessayer.");
+            }
         }
 
-       System.out.println();
-
-    
-        System.out.println("\nTransformation de Léo en humain : ");
-        lycanthrope1.transformerHumain(meuteDesLoups);
-        meuteDesLoups.afficherLycanthropesDeLaMeute(); 
-
-        // Essayer de redéfinir le couple alpha après la transformation
-        System.out.println("\nTentative de redéfinition du couple alpha après transformation de Léo...");
-        
-        meuteDesLoups.ajouterMembre(lycanthrope10);
-        meuteDesLoups.definirCoupleAlpha();
-        meuteDesLoups.afficherLycanthropesDeLaMeute();
+        scanner.close();
     }
+       
 }
 
 
