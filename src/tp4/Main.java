@@ -95,6 +95,7 @@ public class Main {
 	                                        	}
 	                            		}
 	                            		
+	                            		
 	                            		boucle=false;
 	                            	case 2:
 	                            		if(lycanthropeL.get(choix3-1).getMeute()==null) {
