@@ -93,11 +93,11 @@ public abstract class Creature {
         }
     	// Ajout d'une chance de contamination
         double chanceDeContamination = Math.random(); // Génère un nombre entre 0 et 1
-        if (chanceDeContamination > 0.0001 && !proches.isEmpty()) { // 75% de chance de contaminer
+        if (chanceDeContamination > 0.0 && !proches.isEmpty()) { // 75% de chance de contaminer
             contaminerAutres(proches);
         }
         else {
-            if (chanceDeContamination <= 0.25) {
+            if (chanceDeContamination <= -1) {
                 System.out.println("Pas de contamination cette fois (chanceDeContamination = " + chanceDeContamination + ").");
             }
             if (proches.isEmpty()) {
@@ -108,8 +108,10 @@ public abstract class Creature {
     
  // Contamine une autre créature aléatoire
     private void contaminerAutres(List<Creature> proches) {
-        if (!maladies.isEmpty() && !proches.isEmpty()) {
-            Creature cible = proches.get(new Random().nextInt(proches.size()));
+    	// Filtrer pour exclure la créature elle-même
+        List<Creature> ciblesValides = proches.stream().filter(proche -> !proche.equals(this)).toList();
+        if (!maladies.isEmpty() && !ciblesValides.isEmpty()) {
+            Creature cible = ciblesValides.get(new Random().nextInt(ciblesValides.size()));
             Maladie maladie = maladies.get(new Random().nextInt(maladies.size()));
             cible.tomberMalade(maladie);
             System.out.println(nomComplet + " contamine " + cible.getNomComplet() + " avec " + maladie + " en s'emportant.");
