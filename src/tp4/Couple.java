@@ -2,8 +2,10 @@ package tp4;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Couple {
+	private Random random = new Random();
     private Lycanthrope male;
     private Lycanthrope femelle;
 
@@ -24,7 +26,7 @@ public class Couple {
         int nombreDeJeunes = (int) (Math.random() * 7) + 1; // Nombre aléatoire entre 1 et 7
         for (int i = 0; i < nombreDeJeunes; i++) {
             // Créer un nouveau lycanthrope, avec un rang γ par exemple
-            Lycanthrope jeune = new Lycanthrope(Math.random() > 0.5, "jeune", 50, 0.0f, "γ", 1, 1.0f, "Meute", "Jeune_" + i);
+            Lycanthrope jeune = new Lycanthrope(Math.random() > 0.5, random.nextInt(100), random.nextFloat(10),  random.nextInt(10), random.nextInt(10), "nom"+i);
             portee.add(jeune);
         }
         return portee;

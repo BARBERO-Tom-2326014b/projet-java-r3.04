@@ -197,6 +197,9 @@ abstract class ServiceMedical {
         // Logique pour augmenter le niveau de la maladie (exemple simple)
         // La classe Maladie devrait avoir une méthode pour évoluer son niveau
         maladie.augmenterNiveau(1);
+        if(maladie.estLetale()) {
+        	creature.estMort();
+        };
     }
 
     // Méthode pour rendre malade une créature (exemple de tomber malade)
