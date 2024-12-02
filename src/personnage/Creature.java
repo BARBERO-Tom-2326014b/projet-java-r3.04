@@ -61,8 +61,7 @@ public abstract class Creature {
     }
 
     public void attendre(List<Creature> proches) {
-    	 int chance = (int)(Math.random() * 1);
-         System.out.println(chance);
+    	 int chance = (int)(Math.random() * 2);
         moral -= 10;
         if (moral < 0) moral = 0;
         System.out.println(nomComplet + " attend... Moral actuel : " + moral);

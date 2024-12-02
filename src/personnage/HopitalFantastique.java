@@ -245,7 +245,17 @@ public class HopitalFantastique {
             });
             threads.add(threadEvenHopital);
             
-
+            for (ServiceMedical serviceX : servicesMedicals) {
+            	Thread thread = new Thread(() -> {
+            		synchronized(this) {
+            			for(Creature creatureDansHopital : serviceX.getCreatures()) {
+            				creatureDansHopital.attendre(serviceX.getCreatures());
+            			}
+            		}
+            	});
+            	threads.add(thread);
+            }
+            
             for (ServiceMedical serviceX : servicesMedicals) {
                 Thread thread = new Thread(() -> {
                     synchronized (this) {

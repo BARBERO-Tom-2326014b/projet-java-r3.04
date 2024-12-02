@@ -94,13 +94,22 @@ public class Medecin extends Creature {
                 break;
 
             case 2: // Soigner les créatures
+            	int chance = 1 + (int)(Math.random() * 10);
                 System.out.println("Choisissez un service médical pour soigner les créatures :");
                 ServiceMedical serviceSoins = choisirService(scanner, services);
                 if(serviceSoins.getBudget()>2000) {
-                soignerCreature(serviceSoins);
-                serviceSoins.setBudget(serviceSoins.getBudget()-2000);
-                System.out.println("Le soin sur le patient vous a couté 2000 votre budget est actuellement" + serviceSoins.getBudget())
-                ;}
+                	if(chance <10) {
+		                soignerCreature(serviceSoins);
+		                serviceSoins.setBudget(serviceSoins.getBudget()-2000);
+		                System.out.println("Le soin sur le patient vous a couté 2000 votre budget est actuellement" + serviceSoins.getBudget())
+		                ;}
+                	else {
+                		serviceSoins.setBudget(serviceSoins.getBudget()-2000);
+		                System.out.println("Les medecin n'ont pas reussi a guerrir le patient...\n "
+		                		+ "cela vous a quand meme couté 2000 votre budget est actuellement" + serviceSoins.getBudget());
+		                
+                	}
+                }
                 else {
                 	System.out.println("vous n'avez pas assez de budget dans ce service pour effectuer un soins.");
                 }
