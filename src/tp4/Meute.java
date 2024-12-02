@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Meute {
     private String nom;
-    private List<Lycanthrope> lycanthropes;
-    private Couple coupleAlpha;
+    private ArrayList<Lycanthrope> lycanthropes = new ArrayList<Lycanthrope>();
+    private ArrayList<Lycanthrope> coupleAlpha = new ArrayList<Lycanthrope>();
 
     public Meute(String nom) {
         this.nom = nom;
@@ -17,6 +17,7 @@ public class Meute {
     // Ajouter un lycanthrope à la meute
     public void ajouterMembre(Lycanthrope lycanthrope) {
         this.lycanthropes.add(lycanthrope);
+        
     }
 
     // Définir le couple Alpha (mâle et femelle les plus forts)
@@ -44,7 +45,9 @@ public class Meute {
 
         // Si un mâle et une femelle ont été trouvés, les désigner comme couple Alpha
         if (meilleurMâle != null && meilleureFemelle != null) {
-            this.coupleAlpha = new Couple(meilleurMâle, meilleureFemelle);
+        	coupleAlpha.clear();
+            coupleAlpha.add(meilleureFemelle);
+            coupleAlpha.add(meilleurMâle);
             System.out.println("Couple Alpha défini: " + meilleurMâle.getNom() + " et " + meilleureFemelle.getNom());
         } else {
             System.out.println("Impossible de définir un couple Alpha: Mâle et/ou Femelle non trouvés.");
@@ -53,14 +56,14 @@ public class Meute {
 
     // Méthode pour afficher les membres de la meute
     public void afficherLycanthropesDeLaMeute() {
-        System.out.println("Membres de la meute " + nom + ":");
+        System.out.println("Membres de la meute :" + nom + ":");
         for (Lycanthrope l : lycanthropes) {
             l.afficherCaracteristiques();
         }
     }
 
     // Getter pour obtenir le couple Alpha
-    public Couple getCoupleAlpha() {
+    public ArrayList<Lycanthrope> getCoupleAlpha() {
         return this.coupleAlpha;
     }
 
@@ -77,14 +80,17 @@ public class Meute {
         this.nom = nom;
     }
 
-    public void setLycanthropes(List<Lycanthrope> lycanthropes) {
-        this.lycanthropes = lycanthropes;
-    }
 
 	public void enleverLycanthropes(Lycanthrope l) {
     			lycanthropes.remove(l);
     		
     	}
+	public void hierarchie() {
+		int compt=0;
+		for (Lycanthrope l : lycanthropes) {
+			 
+		}
+	}
 		
 	}
 

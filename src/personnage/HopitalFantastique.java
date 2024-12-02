@@ -5,7 +5,7 @@ import java.util.*;
 public class HopitalFantastique {
     private String nom;
     private int nombreMaxServices;
-    private List<ServiceMedical> servicesMedicals;
+    private static List<ServiceMedical> servicesMedicals;
     private List<Medecin> medecins;
     public static boolean perdu = false;
     private static List<Creature> ListeDeCreatureEnAttente;
@@ -21,6 +21,7 @@ public class HopitalFantastique {
     public static List<Creature> getListeDeCreatureEnAttente() {
 		return ListeDeCreatureEnAttente;
 	}
+    
 
     public void ajouterServiceMedical(ServiceMedical service) {
         if (servicesMedicals.size() < nombreMaxServices) {
@@ -30,14 +31,6 @@ public class HopitalFantastique {
         }
     }
     
-    public boolean servicesPleins() {
-        for (ServiceMedical service : servicesMedicals) {
-            if (service.getNombreCreatures() < service.getCapaciteMax()) {
-                return false; // Si un service n'est pas plein, retourne false
-            }
-        }
-        return true; // Si tous les services sont pleins, retourne true
-    }
 
     public List<Creature> listerCreatures() {
         List<Creature> creaturesDansHopital = new ArrayList<>();
@@ -56,16 +49,67 @@ public class HopitalFantastique {
         medecins.add(medecin);
     }
     
-    public boolean admettreCreature(Creature creature, ServiceMedical serviceVoulu) {
-        if (servicesPleins() == false) {
-        	if(serviceVoulu.getNombreCreatures()<serviceVoulu.getCapaciteMax()) {
-        		serviceVoulu.ajouterCreature(creature);
-	        	listerCreatures().add(creature);
-	            return true;}
-        	return false;
+    public static boolean verifieCompatibilite(Creature creature, ServiceMedical serviceVoulu) {
+        // Obtenez le nom de la classe de la créature
+        String nomClass = creature.getClass().getSimpleName(); // Utilisez getSimpleName() pour obtenir le nom simple de la classe
+
+        // Vérifiez la compatibilité en fonction du type de service
+        switch (serviceVoulu.getClass().getSimpleName()) { // Utilisez getSimpleName() ici aussi
+            case "Crypte":
+                if (nomClass.equals("Zombie") || nomClass.equals("Vampire")) {
+                    // Vérifiez si le service est déjà occupé par une créature de même type
+                    if (!serviceVoulu.getCreatures().isEmpty()) {
+                        Creature creatureInitial = serviceVoulu.getCreatures().get(0);
+                        if (creatureInitial.getClass().getSimpleName().equals(nomClass)) {
+                            return true;
+                        }
+                        return false;
+                    }
+                    return true; // Si le service est vide, accepte la créature
+                }
+                return false;
+
+            case "CentreDeQuarantaine":
+                if (nomClass.equals("Lycanthrope") || nomClass.equals("HommeBete") || nomClass.equals("Orque") || nomClass.equals("Vampire")) {
+                    if (!serviceVoulu.getCreatures().isEmpty()) {
+                        Creature creatureInitial = serviceVoulu.getCreatures().get(0);
+                        if (creatureInitial.getClass().getSimpleName().equals(nomClass)) {
+                            return true;
+                        }
+                        return false;
+                    }
+                    return true; // Si le service est vide, accepte la créature
+                }
+                return false;
+
+            case "ServiceMedicalStandard":
+                if (!serviceVoulu.getCreatures().isEmpty()) {
+                    Creature creatureInitial = serviceVoulu.getCreatures().get(0);
+                    if (creatureInitial.getClass().getSimpleName().equals(nomClass)) {
+                        return true;
+                    }
+                    return false;
+                }
+                return true; // Si le service est vide, accepte la créature
+
+            default:
+                return false; // Si le service n'est pas reconnu
+        }
+    }
+
+    
+    public static void admettreCreature(Creature creature, ServiceMedical serviceVoulu) {
+    	if (serviceVoulu.getNombreCreatures() < serviceVoulu.getCapaciteMax()) {
+        	if(verifieCompatibilite(creature, serviceVoulu)) {
+        		serviceVoulu.getCreatures().add(creature);
+        		System.out.println("La creature a bien été ajoutée");
+        	}
+        	else {
+        		System.out.println("Desoler votre Creature n'est pas du bon type pour ce service");
+        	}
+        			
         } else {
             System.out.println("Tout les services sont pleins ");
-            return false; // Si le service est plein, retourne false
         }
     }
 
@@ -142,11 +186,11 @@ public class HopitalFantastique {
         return noms[random.nextInt(noms.length)];
     }
     
-    public List<ServiceMedicalStandard> listerServices() {
-        List<ServiceMedicalStandard> servicesStandard = new ArrayList<>();
+    public List<ServiceMedical> listerServices() {
+        List<ServiceMedical> servicesStandard = new ArrayList<>();
         for (ServiceMedical service : servicesMedicals) {
-            if (service instanceof ServiceMedicalStandard) {
-                servicesStandard.add((ServiceMedicalStandard) service);
+            if (service instanceof ServiceMedical) {
+                servicesStandard.add((ServiceMedical) service);
             }
         }
         return servicesStandard;
@@ -169,19 +213,25 @@ public class HopitalFantastique {
                         if (!perdu) { // Arrête les actions si perdu est déjà vrai
                             service.modifierEtatCreatures(service.getCreatures());
                             service.modifierEtatService();
-                            ChanceDarriverCreature(ListeDeCreatureEnAttente);
-                            if(!ListeDeCreatureEnAttente.isEmpty()) {
-                                System.out.println("La liste des creatures en attente est :");
-                                for(Creature creatureEnAttente :  ListeDeCreatureEnAttente) {
-                                	System.out.println(creatureEnAttente.getNomComplet()); 
-                                }
-                            }
 
                         }
                     }
                 });
                 threads.add(thread);
             }
+            Thread threadEvenHopital = new Thread(() -> {
+            	synchronized (this) {
+            		ChanceDarriverCreature(ListeDeCreatureEnAttente);
+                    if(!ListeDeCreatureEnAttente.isEmpty()) {
+                        System.out.println("La liste des creatures en attente est :");
+                        for(Creature creatureEnAttente :  ListeDeCreatureEnAttente) {
+                        	System.out.println(creatureEnAttente.getNomComplet() + " - " +creatureEnAttente.getClass().getSimpleName()+ "/n"); 
+                        }
+                    }
+				}
+            });
+            threads.add(threadEvenHopital);
+            
 
             for (ServiceMedical serviceX : servicesMedicals) {
                 Thread thread = new Thread(() -> {

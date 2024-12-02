@@ -17,7 +17,7 @@ public class Medecin extends Creature {
         for (Creature creature : service.getCreatures()) {
             System.out.println(" - " + creature.getNomComplet());
             System.out.print(" Moral: " + creature.getMoral());
-            System.out.print(" Maladies: " + creature.getMaladies());
+            System.out.print(" Maladies: " + creature.getMaladies() + "\n\n");
         }
     }
 
@@ -56,7 +56,7 @@ public class Medecin extends Creature {
     public void transfererCreature(ServiceMedical serviceDepart, ServiceMedical serviceArrivee, Creature creature) {
         if (serviceDepart.getCreatures().contains(creature)) {
             serviceDepart.retirerCreature(creature);
-            serviceArrivee.ajouterCreature(creature);
+            HopitalFantastique.admettreCreature(creature, serviceArrivee);
             System.out.println(creature.getNomComplet() + " a été transféré de " + serviceDepart.getNom() + " vers " + serviceArrivee.getNom());
         } else {
             System.out.println(creature.getNomComplet() + " n'est pas présent dans le service " + serviceDepart.getNom());
@@ -90,6 +90,7 @@ public class Medecin extends Creature {
                 System.out.println("Choisissez un service médical à examiner :");
                 ServiceMedical serviceExam = choisirService(scanner, services);
                 examinerService(serviceExam);
+                System.out.println("\n\n");
                 break;
 
             case 2: // Soigner les créatures
@@ -126,19 +127,11 @@ public class Medecin extends Creature {
             	Creature creatureAttente = choisirCreatureEnAttente(scanner);
                 System.out.println("Choisissez un service médical Acceuillir un patient :");
                 ServiceMedical serviceAcceuil = choisirService(scanner, services);
-            	if(serviceAcceuil.getClass().toGenericString() == "Crypte") {
-	                if(creatureAttente.getClass().toGenericString() != "Zombie" || creatureAttente.getClass().toGenericString() != "Vampire") {
-	                	System.out.println("\nDesoler, seule les vampires ou les zombies peuvent se faire soigner dans une crypte");
-	                }   
-            	}
-                if(serviceAcceuil.getNombreCreatures() >= serviceAcceuil.getCapaciteMax()) {
-                	System.out.println("Le service est plein");
-                	break;
+                if(HopitalFantastique.verifieCompatibilite(creatureAttente, serviceAcceuil)) {
+                	HopitalFantastique.admettreCreature(creatureAttente, serviceAcceuil);
+                    System.out.println("La Creature " + creatureAttente.getNomComplet() + " a bien été acceuili dans le service "+ serviceAcceuil.getNom());
+                    HopitalFantastique.getListeDeCreatureEnAttente().remove(creatureAttente);
                 }
-                
-                serviceAcceuil.ajouterCreature(creatureAttente);
-                System.out.println("La Creature " + creatureAttente.getNomComplet() + " a bien été acceuili dans le service "+ serviceAcceuil.getNom());
-                HopitalFantastique.getListeDeCreatureEnAttente().remove(creatureAttente); 
                 break;
 
             default:

@@ -11,6 +11,7 @@ public class Lycanthrope {
     private int niveau; // Critère de qualite
     private String nom; // Nom du lycanthrope
     private Random random = new Random();
+    private Meute Meute;
   
     
 
@@ -18,11 +19,11 @@ public class Lycanthrope {
     public Lycanthrope(boolean sexe, int force, float facteurDomination, int rang, int niveau, String nom) {
     	int choix=random.nextInt(3);
     	switch (choix) {
-    	case 1:
+    	case 0:
     		this.categorieAge = "Jeune";
-    	case 2:
+    	case 1:
     		this.categorieAge = "Adulte";
-    	case 3:
+    	case 2:
     		this.categorieAge = "Vieux";
     		
     	}
@@ -32,6 +33,7 @@ public class Lycanthrope {
         this.rang = rang;
         this.niveau = niveau;
         this.nom = nom;
+        this.Meute = null;
     }
    
 
@@ -74,8 +76,15 @@ public class Lycanthrope {
     public void setSexe(boolean sexe) {
         this.sexe = sexe;
     }
+    
 
-    public String getCategorieAge() {
+    public Meute getMeute() {
+		return Meute;
+	}
+
+
+
+	public String getCategorieAge() {
         return categorieAge;
     }
 
@@ -111,6 +120,14 @@ public class Lycanthrope {
 			System.out.println( "Lycanthrope [sexe= Femelle" + ", categorieAge=" + categorieAge + ", force=" + force + ", rang=" + rang
 					+ ", niveau=" + niveau + ", nom=" + nom + "]");
 		}
+		
+	}
+
+
+
+
+	public void setMeute(Meute meute2) {
+		Meute = meute2;
 		
 	}
     
