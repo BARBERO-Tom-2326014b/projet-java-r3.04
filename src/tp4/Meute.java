@@ -85,9 +85,11 @@ public class Meute {
     			lycanthropes.remove(l);
     		
     	}
-	
 	public void hierarchie() {
-		
+		int compt=0;
+		for (Lycanthrope l : lycanthropes) {
+			 
+		}
 	}
 		
 	}
