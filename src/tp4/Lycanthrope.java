@@ -7,7 +7,7 @@ public class Lycanthrope {
     private boolean sexe; // true = mâle, false = femelle
     private String categorieAge; // "jeune", "adulte", "vieux"
     private int force; // Force physique
-    private int rang;
+    private String rang;
     private int niveau; // Critère de qualite
     private String nom; // Nom du lycanthrope
     private Random random = new Random();
@@ -16,21 +16,24 @@ public class Lycanthrope {
     
 
     // Constructeur
-    public Lycanthrope(boolean sexe, int force, float facteurDomination, int rang, int niveau, String nom) {
-    	int choix=random.nextInt(3);
+    public Lycanthrope(boolean sexe, int force, float facteurDomination, int niveau, String nom) {
+    	int choix=1;
     	switch (choix) {
     	case 0:
     		this.categorieAge = "Jeune";
+    		break;
     	case 1:
     		this.categorieAge = "Adulte";
+    		break;
     	case 2:
     		this.categorieAge = "Vieux";
+    		break;
     		
     	}
     	
         this.sexe = sexe;
         this.force = force;
-        this.rang = rang;
+        this.rang = null;
         this.niveau = niveau;
         this.nom = nom;
         this.Meute = null;
@@ -38,7 +41,7 @@ public class Lycanthrope {
    
 
     // Getter pour le rang
-    public int getRang() {
+    public String getRang() {
         return this.rang;
     }
 
@@ -85,7 +88,7 @@ public class Lycanthrope {
 
 
 	public String getCategorieAge() {
-        return categorieAge;
+        return this.categorieAge;
     }
 
     public void setCategorieAge(String categorieAge) {
@@ -113,17 +116,22 @@ public class Lycanthrope {
 
 	public void afficherCaracteristiques() {
 		if(sexe==true) {
-			System.out.println( "Lycanthrope [sexe= Male" + ", categorieAge=" + categorieAge + ", force=" + force + ", rang=" + rang
+			System.out.println( "Lycanthrope [sexe= Male" + ", categorieAge=" + this.categorieAge + ", force=" + force + ", rang=" + rang
 					+ ", niveau=" + niveau + ", nom=" + nom + "]");
 		}
 		else {
-			System.out.println( "Lycanthrope [sexe= Femelle" + ", categorieAge=" + categorieAge + ", force=" + force + ", rang=" + rang
+			System.out.println( "Lycanthrope [sexe= Femelle" + ", categorieAge=" + this.categorieAge + ", force=" + force + ", rang=" + rang
 					+ ", niveau=" + niveau + ", nom=" + nom + "]");
 		}
 		
 	}
 
 
+
+
+	public void setRang(String rang) {
+		this.rang = rang;
+	}
 
 
 	public void setMeute(Meute meute2) {

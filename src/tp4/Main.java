@@ -9,17 +9,34 @@ public class Main {
 	private static Random random = new Random();
     public static void main(String[] args) {
     	
-    	Meute meute1 = new Meute("TEAM");
-    	Lycanthrope lycan1 = new Lycanthrope(false, 0, 0, 0, 0, null);
-    	meute1.ajouterMembre(lycan1);
-    	meute1.afficherLycanthropesDeLaMeute();
-    	
     	
         // Scanner pour l'entrée utilisateur
         Scanner scanner = new Scanner(System.in);
         boolean quitter = false;
         ArrayList<Meute> meuteL = new ArrayList<Meute>();
         ArrayList<Lycanthrope> lycanthropeL = new ArrayList<Lycanthrope>();
+        
+        
+        Meute meute10= new Meute("Test");
+        Lycanthrope lycan10 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Tom");
+        Lycanthrope lycan11 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Enzo");
+        Lycanthrope lycan12 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Mathias");
+        Lycanthrope lycan13 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Evan");
+        Lycanthrope lycan14 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Lucas");
+        Lycanthrope lycan15 = new Lycanthrope(false, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Test1");
+        Lycanthrope lycan16 = new Lycanthrope(false, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Test2");
+        meute10.ajouterMembre(lycan10);
+        meute10.ajouterMembre(lycan11);
+        meute10.ajouterMembre(lycan12);
+        meute10.ajouterMembre(lycan13);
+        meute10.ajouterMembre(lycan14);
+        meute10.ajouterMembre(lycan15);
+        meute10.ajouterMembre(lycan16);
+        
+        meute10.definirCoupleAlpha();
+        meute10.hierarchie();
+        
+        meute10.afficherLycanthropesDeLaMeute();
         
         while (!quitter) {
             System.out.println("\nQue souhaitez-vous faire ?");
@@ -47,12 +64,12 @@ public class Main {
                     		System.out.println("nQuel nom voulez-vous donner ?");
                     		String Nom = scanner.nextLine();
                             if(random.nextInt(3)==1) {
-	                            Lycanthrope lycan = new Lycanthrope(false, random.nextInt(100), random.nextFloat(10),  random.nextInt(10), random.nextInt(10),Nom);
+	                            Lycanthrope lycan = new Lycanthrope(false, random.nextInt(100), random.nextFloat(10),  random.nextInt(10),Nom);
 	                            lycanthropeL.add(lycan);
 	                            lycan.afficherCaracteristiques();
                             	}
                             else {
-                            	Lycanthrope lycan = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10),  random.nextInt(10), random.nextInt(10),Nom);
+                            	Lycanthrope lycan = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),Nom);
                             	lycanthropeL.add(lycan);
                             	lycan.afficherCaracteristiques();
                             	}
@@ -92,11 +109,13 @@ public class Main {
 	                                        	meuteL.get(choix5).ajouterMembre(lycanthropeL.get(choix3-1));
 	                                        	System.out.println("Le lycanthrope "+lycanthropeL.get(choix3-1).getNom()+" a bien été ajouté !");
 	                                        	boucle=false;
+	                                        	
 	                                        	}
+	                            			
 	                            		}
 	                            		
-	                            		
 	                            		boucle=false;
+	                            		break;
 	                            	case 2:
 	                            		if(lycanthropeL.get(choix3-1).getMeute()==null) {
 	                            			System.out.println("Il n'est pas dans une meute !");
@@ -124,7 +143,11 @@ public class Main {
                     	
                     	case 4:
                     		break;
+                    		
+                    	 default:
+                             System.out.println("Choix invalide. Veuillez réessayer.");
                     }
+                    
                 	
                
                     
@@ -176,11 +199,16 @@ public class Main {
 	                            		meuteL.get(choix10-1).definirCoupleAlpha();
 	                            		boucle2=false;
 	                            	case 3:
+	                            		meuteL.get(choix10-1).hierarchie();
 	                            		boucle2=false;
 	                            	}
 	                            }
 	                        	break;
 	                        	}
+	                        default:
+	                        	System.out.println("Choix invalide. Veuillez réessayer.");
+	                        	
+	                        	
 	                        }
                     break;
                 default:
@@ -192,5 +220,4 @@ public class Main {
     }
     
 }
-
 
