@@ -164,21 +164,32 @@ abstract class ServiceMedical {
         switch (maladieNom) {
             case "MDC":
                 maladie = Maladie.creerMaladie("MDC");
+                maladie.setNiveauActuel(1);
                 break;
             case "FOMO":
             	maladie = Maladie.creerMaladie("FOMO");
+                maladie.setNiveauActuel(1);
+
                 break;
             case "DRS":
             	maladie = Maladie.creerMaladie("DRS");
+                maladie.setNiveauActuel(1);
+
                 break;
             case "PEC":
             	maladie = Maladie.creerMaladie("PEC");
+                maladie.setNiveauActuel(1);
+
                 break;
             case "ZPL":
             	maladie = Maladie.creerMaladie("ZPL");
+                maladie.setNiveauActuel(1);
+
                 break;
             case "NDMAD":
             	maladie = Maladie.creerMaladie("NDMAD");
+                maladie.setNiveauActuel(1);
+
                 break;
         }
 
@@ -193,10 +204,11 @@ abstract class ServiceMedical {
     private static void evoluerMaladie(Creature creature) {
         List<Maladie> maladies = creature.getMaladies();
         Maladie maladie = maladies.get(new Random().nextInt(maladies.size()));
+        maladie.augmenterNiveau(1);
         System.out.println("La maladie " + maladie + " de " + creature.getNomComplet() + " évolue.");
         // Logique pour augmenter le niveau de la maladie (exemple simple)
         // La classe Maladie devrait avoir une méthode pour évoluer son niveau
-        maladie.augmenterNiveau(1);
+ 
         if(maladie.estLetale()) {
         	creature.estMort();
         };
@@ -225,16 +237,6 @@ abstract class ServiceMedical {
         creatures.remove(creature);
     }
 
-    public boolean ajouterCreature(Creature creature) {
-        if (getCreatures().size() < getCapaciteMax()) {
-            getCreatures().add(creature);
-            return true;
-        }
-        else {
-            System.out.println("Le service est plein.");
-            return false;
-        }
-    }
 
     public void soignerCreatures() {
         if (getCreatures().isEmpty()) {
