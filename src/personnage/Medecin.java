@@ -132,6 +132,7 @@ public class Medecin extends Creature {
                 }
                 serviceAcceuil.ajouterCreature(creatureAttente);
                 System.out.println("La Creature " + creatureAttente.getNomComplet() + " a bien été acceuili dans le service "+ serviceAcceuil.getNom());
+                HopitalFantastique.getListeDeCreatureEnAttente().remove(creatureAttente); 
                 break;
 
             default:
