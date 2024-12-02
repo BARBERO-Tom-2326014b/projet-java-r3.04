@@ -139,7 +139,11 @@ public class HopitalFantastique {
         }
     	
     }
-    
+    /**
+     * 
+     * @param ListeDeCreatureEnAttente
+     * @return
+     */
     public static List<Creature> ajouterCreaturesAleatoires(List<Creature> ListeDeCreatureEnAttente) {
         Random random = new Random();
         
@@ -181,11 +185,20 @@ public class HopitalFantastique {
     }
 
     // Génère un nom aléatoire (exemple simplifié)
+    /**
+     * 
+     * @param random
+     * @return
+     */
     private static String genererNom(Random random) {
         String[] noms = {"Elena", "Eldar", "Grommash", "Thrall", "Vlad", "Luna", "Fenrir", "Tanya", "Zeke"};
         return noms[random.nextInt(noms.length)];
     }
     
+    /**
+     * 
+     * @return
+     */
     public List<ServiceMedical> listerServices() {
         List<ServiceMedical> servicesStandard = new ArrayList<>();
         for (ServiceMedical service : servicesMedicals) {
