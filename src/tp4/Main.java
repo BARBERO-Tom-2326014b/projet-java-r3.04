@@ -23,6 +23,7 @@ public class Main {
         Lycanthrope lycan12 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Mathias");
         Lycanthrope lycan13 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Evan");
         Lycanthrope lycan14 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Lucas");
+        Lycanthrope lycan17 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Tim");
         Lycanthrope lycan15 = new Lycanthrope(false, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Test1");
         Lycanthrope lycan16 = new Lycanthrope(false, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Test2");
         meute10.ajouterMembre(lycan10);
@@ -32,6 +33,8 @@ public class Main {
         meute10.ajouterMembre(lycan14);
         meute10.ajouterMembre(lycan15);
         meute10.ajouterMembre(lycan16);
+        meute10.ajouterMembre(lycan17);
+        
         
         meute10.definirCoupleAlpha();
         meute10.hierarchie();
@@ -191,16 +194,20 @@ public class Main {
 	                            	switch(choix11) {
 	                            	case 0:
 	                            		boucle2=false;
+	                            		break;
 	                            	case 1:
 	                            		meuteL.get(choix10-1).afficherLycanthropesDeLaMeute();
 	                            		boucle2=false;
+	                            		break;
 	                            	
 	                            	case 2:
 	                            		meuteL.get(choix10-1).definirCoupleAlpha();
 	                            		boucle2=false;
+	                            		break;
 	                            	case 3:
 	                            		meuteL.get(choix10-1).hierarchie();
 	                            		boucle2=false;
+	                            		break;
 	                            	}
 	                            }
 	                        	break;

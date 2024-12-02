@@ -17,6 +17,7 @@ public class Meute {
     // Ajouter un lycanthrope à la meute
     public void ajouterMembre(Lycanthrope lycanthrope) {
         this.lycanthropes.add(lycanthrope);
+        lycanthrope.setMeute(this);
         
     }
 
