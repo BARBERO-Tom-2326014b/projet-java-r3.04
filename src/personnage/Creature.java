@@ -93,12 +93,12 @@ public abstract class Creature {
         }
     	// Ajout d'une chance de contamination
         double chanceDeContamination = Math.random(); // Génère un nombre entre 0 et 1
-        if (chanceDeContamination > 0.0 && !proches.isEmpty()) { // 75% de chance de contaminer
+        if (chanceDeContamination > 0 && !proches.isEmpty()) { // 75% de chance de contaminer
             contaminerAutres(proches);
         }
         else {
-            if (chanceDeContamination <= -1) {
-                System.out.println("Pas de contamination cette fois (chanceDeContamination = " + chanceDeContamination + ").");
+            if (chanceDeContamination <= 0) {
+                System.out.println("Pas de contamination cette fois. ");
             }
             if (proches.isEmpty()) {
                 System.out.println("Aucune créature proche à contaminer.");
