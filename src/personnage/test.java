@@ -97,41 +97,59 @@ class TestCreature {
         assertTrue(elfe.estMort());
     }
 
-    @Test
-    void testSEmporterContamineProches() throws Exception{
-        loupG.setMoral(8);
-        Maladie zpl = Maladie.creerMaladie("ZPL");
-        
+@Test
+void testSEmporterContamineProches() throws Exception{
+    loupG.setMoral(8);
+    Maladie zpl = Maladie.creerMaladie("ZPL");
+    
 
-        loupG.hurler(proches);
-        loupG.hurler(proches);
-        ByteArrayOutputStream consoleOutput = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(consoleOutput)); // Rediriger System.out
+    loupG.hurler(proches);
+    loupG.hurler(proches);
+    ByteArrayOutputStream consoleOutput = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(consoleOutput)); // Rediriger System.out
 
-        /*// Cas 1 : Le loup n'est pas malade, il ne devrait pas contaminer
-        loupG.sEmporter(proches); // Appelez la méthode que vous testez
+    // Cas 1 : Le loup n'est pas malade, il ne devrait pas contaminer
+    loupG.sEmporter(proches); // Appelez la méthode que vous testez
 
-        // Vérifier si la phrase de non-contamination a été affichée
-        assertTrue(consoleOutput.toString().contains(loupG.getNomComplet() + " n'est pas malade donc ne contamine pas"));
+    // Vérifier si la phrase de non-contamination a été affichée
+    //assertTrue(consoleOutput.toString().contains(loupG.getNomComplet() + " n'est pas malade donc ne contamine pas"));
 
-        // Réinitialiser la sortie après le test
-        System.setOut(System.out); 
-		*/
-        // Cas 2 : Le loupG tombe malade et il devrait contaminer
-        loupG.tomberMalade(zpl);
-        loupG.sEmporter(proches); // Appeler sEmporter
-        // Vérifier si la phrase de contamination a été affichée
-        assertTrue(consoleOutput.toString().contains(loupG.getNomComplet() + " contamine " + elfe.getNomComplet() + " avec " + zpl + " en s'emportant."));
-        
-        // Réinitialiser la sortie après le test
-        System.setOut(System.out); 
-        
-    }
+    // Réinitialiser la sortie après le test
+    System.setOut(System.out); 
+	
+    // Cas 2 : Le loupG tombe malade et il devrait contaminer
+    loupG.tomberMalade(zpl);
+    loupG.sEmporter(proches); // Appeler sEmporter
+    // Vérifier si la phrase de contamination a été affichée
+    assertTrue(consoleOutput.toString().contains(loupG.getNomComplet() + " contamine " + elfe.getNomComplet() + " avec " + zpl + " en s'emportant."));
+    
+    // Réinitialiser la sortie après le test
+    System.setOut(System.out); 
+    
+}
+@Test
+void testSEmporterContaminePasProches() throws Exception{
+	Maladie zpl = Maladie.creerMaladie("ZPL");
+	
+	ByteArrayOutputStream consoleOutput = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(consoleOutput)); // Rediriger System.out
+    
+    loupG.hurler(proches);
+    loupG.hurler(proches);
+    
+	elfe.tomberMalade(zpl);
+	elfe.sEmporter(proches); // Appeler sEmporter
+	assertTrue(consoleOutput.toString().contains("Pas de contamination cette fois. "));
+	
+	// Réinitialiser la sortie après le test
+	System.setOut(System.out); 
+	}
 
 }
 
-class TestMaladie {
 
+class TestMaladie {
+	
     private List<Maladie> maladies;
     private Orque orque;
     private Elfe elfe;
@@ -237,4 +255,5 @@ class TestMaladie {
         assertTrue(maladiesOrque.stream().anyMatch(m -> m.getNomAbrege().equals("PEC")), 
             "L'orque devrait avoir la maladie 'PEC'.");
     }
+    
 }

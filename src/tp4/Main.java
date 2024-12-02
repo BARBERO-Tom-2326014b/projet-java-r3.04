@@ -9,12 +9,18 @@ public class Main {
 	private static Random random = new Random();
     public static void main(String[] args) {
     	
+    	Meute meute1 = new Meute("TEAM");
+    	Lycanthrope lycan1 = new Lycanthrope(false, 0, 0, 0, 0, null);
+    	meute1.ajouterMembre(lycan1);
+    	meute1.afficherLycanthropesDeLaMeute();
     	
     	
         // Scanner pour l'entrée utilisateur
         Scanner scanner = new Scanner(System.in);
         boolean quitter = false;
+        ArrayList<Meute> meuteL = new ArrayList<Meute>();
         ArrayList<Lycanthrope> lycanthropeL = new ArrayList<Lycanthrope>();
+        
         while (!quitter) {
             System.out.println("\nQue souhaitez-vous faire ?");
             System.out.println("1. Lycanthropes");
@@ -52,12 +58,65 @@ public class Main {
                             	}
                             break;
                     	case 2:
+                    		System.out.println("0. Quitter");
+                    		int cpt=1;
+                    		for (Lycanthrope l : lycanthropeL) {
+                                	System.out.println(cpt+" "+l.getNom());
+                                	cpt+=1;
+                                	}
+                    		int choix3 = scanner.nextInt();
+                            scanner.nextLine();
+                            
+	                        if(choix3!=0) {
+	                        boolean boucle =true;
+	                            while(boucle) {
+	                            	System.out.println(" Vous avez choisi le lycanthrope : "+lycanthropeL.get(choix3-1).getNom());
+	                            	System.out.println("1. L'ajouter a une meute");
+	                            	System.out.println("2. Retirer d'une meute");
+	                            	System.out.println("3. Quitter");
+	                            	int choix4 = scanner.nextInt();
+	                            	switch(choix4) {
+	                            	case 1:
+	                            		if(meuteL.size()==0) {
+	                            			System.out.println("Il n'y a pas de meute créer");
+	                            			boucle=false;
+	                            		}
+	                            		else {
+	                            			cpt=0;
+	                            			System.out.println("Voici les différentes meutes : ");
+	                            			for (Meute m : meuteL) {
+	                                        	System.out.println(cpt+" "+m.getNom());
+	                                        	cpt+=1;
+	                                        	System.out.println("Dans quel meute voulez-vous l'ajouter ?");
+	                                        	int choix5 = scanner.nextInt();
+	                                        	meuteL.get(choix5).ajouterMembre(lycanthropeL.get(choix3-1));
+	                                        	System.out.println("Le lycanthrope "+lycanthropeL.get(choix3-1).getNom()+" a bien été ajouté !");
+	                                        	boucle=false;
+	                                        	}
+	                            		}
+	                            		
+	                            		boucle=false;
+	                            	case 2:
+	                            		if(lycanthropeL.get(choix3-1).getMeute()==null) {
+	                            			System.out.println("Il n'est pas dans une meute !");
+	                            		}
+	                            		else {
+	                            			lycanthropeL.get(choix3-1).getMeute().enleverLycanthropes(lycanthropeL.get(choix3-1));;
+	                            		}
+	                            		boucle=false;
+	                            	case 3:
+	                            		boucle=false;
+	                            	}
+	                          
+	                            }
+	                        }
                     		break;
+                    		
                     	case 3:
                     		System.out.println("Liste des lycanthropes : \n");
                     		System.out.println(lycanthropeL.size());
                             for (Lycanthrope l : lycanthropeL) {
-                                System.out.println(l.getNom());
+                                l.afficherCaracteristiques();
                             }
                             break;
                     		
@@ -66,17 +125,62 @@ public class Main {
                     		break;
                     }
                 	
-                    
-                    
-                    
+               
                     
                     break;
                 case 2:
-                	System.out.println("Quel nom voulez-vous choisir ?");
-                    String Nom1 = scanner.nextLine();
-                    if(random.nextInt(3)==1) {
-                    Lycanthrope lycan = new Lycanthrope(false, random.nextInt(100), random.nextFloat(10),  random.nextInt(10), random.nextInt(10),Nom1); 
-                    }
+                	System.out.println("\nQue souhaitez-vous faire ?");
+                	System.out.println("0. Quitter");
+                    System.out.println("1. Créer Meute");
+                    System.out.println("2. Choisir Meute");
+                    
+                    int Nom1 = scanner.nextInt();
+                    scanner.nextLine();
+                    switch (Nom1) {
+	                    case 1:
+	                    	System.out.println("Quel nom voulez-vous donner ?");
+                    		String Nom = scanner.nextLine();
+                    		Meute meute = new Meute(Nom);
+                    		meuteL.add(meute);
+                    		System.out.println("La meute a bien été créer !");
+	                    break;
+	                    
+	                    case 2:
+	                    	System.out.println("0. Quitter");
+	                    	int cpt=1;
+                    		for (Meute m : meuteL) {
+                                	System.out.println(cpt+" "+m.getNom());
+                                	cpt+=1;
+                                	}
+                    		int choix10 = scanner.nextInt();
+                            scanner.nextLine();
+                            
+	                        if(choix10!=0) {
+	                        	boolean boucle2 =true;
+	                            while(boucle2) {
+	                            	System.out.println("Vous avez choisi la meute : "+meuteL.get(choix10-1).getNom());
+	                            	System.out.println("0. Quitter");
+	                            	System.out.println("1. Voir les loups dans la meute");
+	                            	System.out.println("2. Créer couple (si possible)");
+	                            	System.out.println("3. Voir Hiérarchie");
+	                            	int choix11 = scanner.nextInt();
+	                            	switch(choix11) {
+	                            	case 0:
+	                            		boucle2=false;
+	                            	case 1:
+	                            		meuteL.get(choix10-1).afficherLycanthropesDeLaMeute();
+	                            		boucle2=false;
+	                            	
+	                            	case 2:
+	                            		meuteL.get(choix10-1).definirCoupleAlpha();
+	                            		boucle2=false;
+	                            	case 3:
+	                            		boucle2=false;
+	                            	}
+	                            }
+	                        	break;
+	                        	}
+	                        }
                     break;
                 default:
                     System.out.println("Choix invalide. Veuillez réessayer.");
