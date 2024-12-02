@@ -38,7 +38,7 @@ abstract class ServiceMedical {
         return superficie;
     }
 
-    public int getCapaciteMax(creatures) {
+    public int getCapaciteMax() {
         return capaciteMax;
     }
 
