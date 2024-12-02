@@ -93,7 +93,7 @@ public abstract class Creature {
         }
     	// Ajout d'une chance de contamination
         double chanceDeContamination = Math.random(); // Génère un nombre entre 0 et 1
-        if (chanceDeContamination > 0.25 && !proches.isEmpty()) { // 75% de chance de contaminer
+        if (chanceDeContamination > 0.0001 && !proches.isEmpty()) { // 75% de chance de contaminer
             contaminerAutres(proches);
         }
         else {
@@ -144,7 +144,8 @@ public abstract class Creature {
     public boolean estMort() {
         for (Maladie maladie : maladies) {
             if (maladie.estLetale()) { // Si une maladie est létale
-                System.out.println(nomComplet + " a trépassé à cause de " + maladie.getNomComplet() + ".");
+                System.out.println("\n " +nomComplet + " a trépassé à cause de " + maladie.getNomComplet() + ""
+                		+ "\n ");
                 return true;
             }
         }

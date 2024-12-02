@@ -7,13 +7,20 @@ public class HopitalFantastique {
     private int nombreMaxServices;
     private List<ServiceMedical> servicesMedicals;
     private List<Medecin> medecins;
+    public static boolean perdu = false;
+    private static List<Creature> ListeDeCreatureEnAttente;
 
     public HopitalFantastique(String nom, int nombreMaxServices) {
         this.nom = nom;
         this.nombreMaxServices = nombreMaxServices;
         this.servicesMedicals = new ArrayList<>();
         this.medecins = new ArrayList<>();
+        this.ListeDeCreatureEnAttente = new ArrayList<>();
     }
+    
+    public static List<Creature> getListeDeCreatureEnAttente() {
+		return ListeDeCreatureEnAttente;
+	}
 
     public void ajouterServiceMedical(ServiceMedical service) {
         if (servicesMedicals.size() < nombreMaxServices) {
@@ -42,6 +49,8 @@ public class HopitalFantastique {
 
         return creaturesDansHopital;
     }
+    
+    
     
     public void ajouterMedecin(Medecin medecin) {
         medecins.add(medecin);
@@ -76,6 +85,63 @@ public class HopitalFantastique {
         return total;
     }
     
+    public void ChanceDarriverCreature (List<Creature> ListeDeCreatureEnAttente) {
+    	Random random = new Random();
+    	int chance = random.nextInt(100); // 0 à 99 inclus
+
+        // Si le nombre est inférieur à 10 (10 % de chance)
+        if (chance < 10) {
+        	ajouterCreaturesAleatoires(ListeDeCreatureEnAttente);
+        }
+    	
+    }
+    
+    public static List<Creature> ajouterCreaturesAleatoires(List<Creature> ListeDeCreatureEnAttente) {
+        Random random = new Random();
+        
+
+        
+        int type = random.nextInt(5); // 0 = Elfe, 1 = Orque, 2 = Vampire, 3 = Zombie, 4 = Lycanthrope
+        Creature creature;
+
+        String nom = genererNom(random);
+        String sexe = random.nextBoolean() ? "M" : "F";
+        double poids = 50 + random.nextDouble() * 100; // 50 à 150 kg
+        double taille = 1.5 + random.nextDouble() * 0.8; // 1.5 à 2.3 mètres
+        int age = random.nextInt(300); // 0 à 300 ans
+
+        switch (type) {
+            case 0: // Elfe
+                creature = new Elfe(nom, sexe, poids, taille, age);
+                ListeDeCreatureEnAttente.add(creature);
+                return ListeDeCreatureEnAttente;
+            case 1: // Orque
+                creature = new Orque(nom, sexe, poids, taille, age);
+                ListeDeCreatureEnAttente.add(creature);
+                return ListeDeCreatureEnAttente;
+            case 2: // Vampire
+                creature = new Vampire(nom, sexe, poids, taille, age);
+                ListeDeCreatureEnAttente.add(creature);
+                return ListeDeCreatureEnAttente;
+            case 3: // Zombie
+                creature = new Zombie(nom, sexe, poids, taille, age);
+                ListeDeCreatureEnAttente.add(creature);
+                return ListeDeCreatureEnAttente;
+            case 4: // Lycanthrope
+                creature = new Lycanthrope(nom, sexe, poids, taille, age);
+                ListeDeCreatureEnAttente.add(creature);
+                return ListeDeCreatureEnAttente;
+            default:
+                throw new IllegalArgumentException("Type de créature inconnu : " + type);
+        }
+    }
+
+    // Génère un nom aléatoire (exemple simplifié)
+    private static String genererNom(Random random) {
+        String[] noms = {"Elena", "Eldar", "Grommash", "Thrall", "Vlad", "Luna", "Fenrir", "Tanya", "Zeke"};
+        return noms[random.nextInt(noms.length)];
+    }
+    
     public List<ServiceMedicalStandard> listerServices() {
         List<ServiceMedicalStandard> servicesStandard = new ArrayList<>();
         for (ServiceMedical service : servicesMedicals) {
@@ -90,59 +156,84 @@ public class HopitalFantastique {
     //
     public void gestionTemps(int intervalle) {
         Random rand = new Random();
+        
 
         for (int i = 0; i < intervalle; i++) {
+            // Liste pour stocker tous les threads
+            List<Thread> threads = new ArrayList<>();
+
             // Création des threads pour les services médicaux
-            List<Thread> threadsServices = new ArrayList<>();
             for (ServiceMedical service : servicesMedicals) {
-                Runnable serviceTask = () -> {
-                    service.modifierEtatCreatures(service.getCreatures());
-                    service.modifierEtatService();
-                };
-                threadsServices.add(new Thread(serviceTask));
+                Thread thread = new Thread(() -> {
+                    synchronized (this) {
+                        if (!perdu) { // Arrête les actions si perdu est déjà vrai
+                            service.modifierEtatCreatures(service.getCreatures());
+                            service.modifierEtatService();
+                            ChanceDarriverCreature(ListeDeCreatureEnAttente);
+                            if(!ListeDeCreatureEnAttente.isEmpty()) {
+                                System.out.println("La liste des creatures en attente est :");
+                                for(Creature creatureEnAttente :  ListeDeCreatureEnAttente) {
+                                	System.out.println(creatureEnAttente.getNomComplet()); 
+                                }
+                            }
+
+                        }
+                    }
+                });
+                threads.add(thread);
+            }
+
+            for (ServiceMedical serviceX : servicesMedicals) {
+                Thread thread = new Thread(() -> {
+                    synchronized (this) {
+                        if (!perdu) { // Vérifie si perdu est déjà vrai
+                            serviceX.maladieTropEvoluer(serviceX.getCreatures());
+                            if (serviceX.getAperdu()) {
+                                perdu = true;
+                                afficherMessagePerte(); // Affiche immédiatement le message
+                            }
+                        }
+                    }
+                });
+                threads.add(thread);
             }
 
             // Création des threads pour les actions des médecins
-            List<Thread> threadsMedecins = new ArrayList<>();
             for (Medecin medecin : medecins) {
-                Runnable medecinTask = () -> {
-                    synchronized (this) { // Synchronisation si nécessaire
-                        medecin.effectuerActions(rand, servicesMedicals);
+                Thread thread = new Thread(() -> {
+                    synchronized (this) {
+                        if (!perdu) { // Vérifie si perdu est déjà vrai
+                            medecin.effectuerActions(rand, servicesMedicals);
+                        }
                     }
-                };
-                threadsMedecins.add(new Thread(medecinTask));
+                });
+                threads.add(thread);
             }
 
-            // Démarrage de tous les threads des services médicaux
-            for (Thread thread : threadsServices) {
+            // Démarrage de tous les threads
+            for (Thread thread : threads) {
                 thread.start();
             }
 
-            // Démarrage de tous les threads des médecins
-            for (Thread thread : threadsMedecins) {
-                thread.start();
-            }
-
-            // Attendre que tous les threads des services médicaux se terminent
-            for (Thread thread : threadsServices) {
+            // Surveillance des threads et interruption immédiate en cas de perte
+            for (Thread thread : threads) {
                 try {
-                    thread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            // Attendre que tous les threads des médecins se terminent
-            for (Thread thread : threadsMedecins) {
-                try {
-                    thread.join();
+                    thread.join(); // Attend la fin des threads
+                    if (perdu) {
+                        // Interrompt tous les threads restants dès qu'une perte est détectée
+                        for (Thread t : threads) {
+                            System.exit(1);
+                        	t.interrupt();
+                        }
+                        break; // Arrête la boucle principale
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
 
             // Afficher les statistiques après chaque intervalle
-            afficherStatistiques();
+            //afficherStatistiques();
 
             // Pause entre les intervalles si nécessaire
             try {
@@ -151,6 +242,30 @@ public class HopitalFantastique {
                 e.printStackTrace();
             }
         }
+    }
+
+
+    
+    private void afficherMessagePerte() {
+        String message = "vous avez perdu";
+        int largeur = message.length() + 6; // Ajuste la largeur du cadre en fonction du message
+
+        // Ligne supérieure du cadre
+        String bordure = "#".repeat(largeur);
+        System.out.println(bordure);
+
+        // Ligne vide avec des marges
+        System.out.println("#" + " ".repeat(largeur - 2) + "#");
+
+        // Ligne contenant le message centré
+        int espaces = (largeur - 2 - message.length()) / 2;
+        System.out.println("#" + " ".repeat(espaces) + message + " ".repeat(espaces) + "#");
+
+        // Ligne vide avec des marges
+        System.out.println("#" + " ".repeat(largeur - 2) + "#");
+
+        // Ligne inférieure du cadre
+        System.out.println(bordure);
     }
 
    
