@@ -126,10 +126,16 @@ public class Medecin extends Creature {
             	Creature creatureAttente = choisirCreatureEnAttente(scanner);
                 System.out.println("Choisissez un service médical Acceuillir un patient :");
                 ServiceMedical serviceAcceuil = choisirService(scanner, services);
+            	if(serviceAcceuil.getClass().toGenericString() == "Crypte") {
+	                if(creatureAttente.getClass().toGenericString() != "Zombie" || creatureAttente.getClass().toGenericString() != "Vampire") {
+	                	System.out.println("\nDesoler, seule les vampires ou les zombies peuvent se faire soigner dans une crypte");
+	                }   
+            	}
                 if(serviceAcceuil.getNombreCreatures() >= serviceAcceuil.getCapaciteMax()) {
                 	System.out.println("Le service est plein");
                 	break;
                 }
+                
                 serviceAcceuil.ajouterCreature(creatureAttente);
                 System.out.println("La Creature " + creatureAttente.getNomComplet() + " a bien été acceuili dans le service "+ serviceAcceuil.getNom());
                 HopitalFantastique.getListeDeCreatureEnAttente().remove(creatureAttente); 
