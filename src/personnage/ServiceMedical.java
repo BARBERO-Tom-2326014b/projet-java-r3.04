@@ -12,6 +12,7 @@ abstract class ServiceMedical {
     private int capaciteMax;
     private List<Creature> creatures;
     private double budget;
+    private boolean Aperdu = false;
 
     public ServiceMedical(String nom, double superficie, int capaciteMax, double budget) {
         this.nom = nom;
@@ -23,6 +24,14 @@ abstract class ServiceMedical {
 
     public String getNom() {
         return nom;
+    }
+    
+    public void setAperdu() {
+    	Aperdu = true;
+    }
+    
+    public boolean getAperdu() {
+    	return Aperdu;
     }
 
     public double getSuperficie() {
@@ -49,6 +58,24 @@ abstract class ServiceMedical {
     	return creatures.size();
     }
     
+    
+    
+    
+    
+    public void maladieTropEvoluer(List<Creature> creatures) {
+        List<Creature> ListeDesMorts = new ArrayList<>();
+        for (Creature creature : creatures) {
+            if (creature.estMort()) {
+            	ListeDesMorts.add(creature);
+            }
+        }
+        creatures.removeAll(ListeDesMorts);
+        if (ListeDesMorts.isEmpty() == false){
+        	setAperdu();
+        }
+    }
+    
+    
  // Méthode pour modifier l'état des créatures
     public static void modifierEtatCreatures(List<Creature> creatures) {
         Random random = new Random();
@@ -58,10 +85,10 @@ abstract class ServiceMedical {
             int changementMoral = random.nextInt(21) - 10; // Valeur entre -10 et +10
             int nouveauMoral = creature.getMoral() + changementMoral;
             creature.setMoral(Math.max(0, Math.min(nouveauMoral, 100))); // Bornage du moral entre 0 et 100
-            System.out.println(creature.getNomComplet() + " voit son moral changer de " + changementMoral + ". Nouveau moral : " + creature.getMoral());
+            //System.out.println(creature.getNomComplet() + " voit son moral changer de " + changementMoral + ". Nouveau moral : " + creature.getMoral());
 
             // Chance d'ajouter une maladie
-            if (random.nextInt(100) < 20) { // 30% de chance d'ajouter une maladie
+            if (random.nextInt(100) < 10) { // 30% de chance d'ajouter une maladie
                 ajouterMaladie(creature);
             }
 
@@ -69,12 +96,8 @@ abstract class ServiceMedical {
             if (random.nextInt(100) < 100 && !creature.getMaladies().isEmpty()) { // 20% de chance d'évoluer une maladie
                 evoluerMaladie(creature);
             }
-/*
-            // Chance de rendre une créature malade
-            if (random.nextInt(100) < 15) { // 15% de chance de rendre malade
-                rendreMalade(creature);
-            }
-            */
+
+            
         }
     }
     
@@ -174,6 +197,9 @@ abstract class ServiceMedical {
         // Logique pour augmenter le niveau de la maladie (exemple simple)
         // La classe Maladie devrait avoir une méthode pour évoluer son niveau
         maladie.augmenterNiveau(1);
+        if(maladie.estLetale()) {
+        	creature.estMort();
+        };
     }
 
     // Méthode pour rendre malade une créature (exemple de tomber malade)

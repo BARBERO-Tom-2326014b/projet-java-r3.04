@@ -148,8 +148,8 @@ public class main {
 
     // Choisir un service pour la créature
     System.out.println("Choisissez un service : ");
-    for (int i = 0; i < hopital.listerCreatures().size(); i++) {
-        System.out.println((i + 1) + ". " + hopital.listerCreatures().get(i));
+    for (int i = 0; i < hopital.listerServices().size(); i++) {
+        System.out.println((i + 1) + ". " + hopital.listerServices().get(i).getNom());
     }
     int choixService = scanner.nextInt() - 1;
     scanner.nextLine(); // Consommer le saut de ligne restant

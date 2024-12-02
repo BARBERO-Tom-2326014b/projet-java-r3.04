@@ -11,7 +11,7 @@ public class Maladie {
         this.nomComplet = nomComplet;
         this.nomAbrege = nomAbrege;
         this.niveauMax = niveauMax;
-        this.niveauActuel = 1; // Niveau initial de la maladie
+        this.niveauActuel = 0; // Niveau initial de la maladie
     }
 
     // Getters et Setters
@@ -28,7 +28,14 @@ public class Maladie {
     }
 
     public void setNiveauActuel(int niveau) {
-        this.niveauActuel = niveauActuel +1;
+    	// Validation des limites
+        if (niveau < 0) {
+            this.niveauActuel = 0; // Niveau minimal
+        } else if (niveau > niveauMax) {
+            this.niveauActuel = niveauMax; // Niveau maximal
+        } else {
+            this.niveauActuel = niveau;
+        }
     }
 
     public int getNiveauMax() {
@@ -47,7 +54,7 @@ public class Maladie {
 
     // Vérifie si la maladie est létale
     public boolean estLetale() {
-    	return niveauActuel >= niveauMax;
+    	return this.niveauActuel >= this.niveauMax;
     }
 
     @Override

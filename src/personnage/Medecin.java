@@ -13,26 +13,43 @@ public class Medecin extends Creature {
     // Méthode pour examiner un service médical
     public void examinerService(ServiceMedical service) {
         System.out.println("Examen du service " + service.getNom() + ":");
-        System.out.println(service);
         System.out.println("Liste des créatures:");
         for (Creature creature : service.getCreatures()) {
-            System.out.println(" - " + creature);
+            System.out.println(" - " + creature.getNomComplet());
+            System.out.print(" Moral: " + creature.getMoral());
+            System.out.print(" Maladies: " + creature.getMaladies());
         }
     }
 
-    // Méthode pour soigner toutes les créatures du service médical
-    public void soignerCreatures(ServiceMedical service) {
-        System.out.println("Soins en cours pour les créatures du service " + service.getNom() + "...");
+    public void soignerCreature(ServiceMedical service) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Qui souhaitez-vous soigner ? Choisissez un numéro :");
+        int index = 1;
         for (Creature creature : service.getCreatures()) {
-            creature.etreSoignee(); // méthode pour guérir une créature
+            System.out.println(index + ". " + creature.getNomComplet() + creature.getMaladies());
+            index++;
         }
-        System.out.println("Toutes les créatures du service " + service.getNom() + " ont été soignées.");
+        
+        // Demande un choix à l'utilisateur
+        System.out.print("Entrez le numéro correspondant : ");
+        int choix = scanner.nextInt();
+        
+        // Vérifie si le choix est valide
+        if (choix > 0 && choix <= service.getCreatures().size()) {
+            Creature creatureASoigner = service.getCreatures().get(choix - 1);
+            creatureASoigner.etreSoignee(); // Soigne la créature sélectionnée
+            System.out.println("La créature " + creatureASoigner.getNomComplet() + " a été soignée.");
+            System.out.println("Il reste" + creatureASoigner.getMaladies()+ " a La créature " + creatureASoigner.getNomComplet());
+        } else {
+            System.out.println("Choix invalide. Aucune créature n'a été soignée.");
+        }
     }
 
     // Méthode pour réviser le budget du service médical
-    public void reviserBudget(ServiceMedical service, double nouveauBudget) {
-        service.setBudget(nouveauBudget);
-        System.out.println("Le budget du service " + service.getNom() + " a été révisé à " + nouveauBudget + " crédits.");
+    public void reviserBudget(ServiceMedical service) {
+        service.setBudget(service.getBudget()+10000);
+        System.out.println("Le budget du service " + service.getNom() + " a été révisé à " + service.getBudget() + " crédits.");
     }
 
     // Méthode pour transférer une créature vers un autre service médical
@@ -46,16 +63,28 @@ public class Medecin extends Creature {
         }
     }
     
-    public void effectuerActions(Random rand, List<ServiceMedical> services) {
+    public void acceuilirUnPatient(Creature creature, ServiceMedical serviceAcceuilir) {
+    	System.out.println("\n");
+    }
+    
+    public synchronized void effectuerActions(Random rand, List<ServiceMedical> services) {
+    	
+    	if (HopitalFantastique.perdu){
+    		return;
+    	}
         Scanner scanner = new Scanner(System.in);
+        for(ServiceMedical serviceX : services) {
+        	serviceX.maladieTropEvoluer(serviceX.getCreatures());
+        }
         System.out.println("\nChoisissez une action à effectuer :");
         System.out.println("1. Examiner un service médical");
         System.out.println("2. Soigner les créatures d'un service médical");
         System.out.println("3. Réviser le budget d'un service médical");
         System.out.println("4. Transférer une créature entre deux services médicaux");
+        System.out.println("5. Acceuillir un nouveau patient");
         System.out.println("Votre choix : ");
         int choix = scanner.nextInt();
-
+        
         switch (choix) {
             case 1: // Examiner un service
                 System.out.println("Choisissez un service médical à examiner :");
@@ -66,15 +95,20 @@ public class Medecin extends Creature {
             case 2: // Soigner les créatures
                 System.out.println("Choisissez un service médical pour soigner les créatures :");
                 ServiceMedical serviceSoins = choisirService(scanner, services);
-                soignerCreatures(serviceSoins);
+                if(serviceSoins.getBudget()>2000) {
+                soignerCreature(serviceSoins);
+                serviceSoins.setBudget(serviceSoins.getBudget()-2000);
+                System.out.println("Le soin sur le patient vous a couté 2000 votre budget est actuellement" + serviceSoins.getBudget())
+                ;}
+                else {
+                	System.out.println("vous n'avez pas assez de budget dans ce service pour effectuer un soins.");
+                }
                 break;
 
             case 3: // Réviser le budget
                 System.out.println("Choisissez un service médical pour réviser le budget :");
                 ServiceMedical serviceBudget = choisirService(scanner, services);
-                System.out.println("Entrez le nouveau budget :");
-                double nouveauBudget = scanner.nextDouble();
-                reviserBudget(serviceBudget, nouveauBudget);
+                reviserBudget(serviceBudget);
                 break;
 
             case 4: // Transférer une créature
@@ -86,6 +120,26 @@ public class Medecin extends Creature {
                 ServiceMedical serviceArrivee = choisirService(scanner, services);
                 transfererCreature(serviceDepart, serviceArrivee, creature);
                 break;
+                
+            case 5: // Réviser le budget
+            	System.out.println("Choisissez le patient a Acceuilir");
+            	Creature creatureAttente = choisirCreatureEnAttente(scanner);
+                System.out.println("Choisissez un service médical Acceuillir un patient :");
+                ServiceMedical serviceAcceuil = choisirService(scanner, services);
+            	if(serviceAcceuil.getClass().toGenericString() == "Crypte") {
+	                if(creatureAttente.getClass().toGenericString() != "Zombie" || creatureAttente.getClass().toGenericString() != "Vampire") {
+	                	System.out.println("\nDesoler, seule les vampires ou les zombies peuvent se faire soigner dans une crypte");
+	                }   
+            	}
+                if(serviceAcceuil.getNombreCreatures() >= serviceAcceuil.getCapaciteMax()) {
+                	System.out.println("Le service est plein");
+                	break;
+                }
+                
+                serviceAcceuil.ajouterCreature(creatureAttente);
+                System.out.println("La Creature " + creatureAttente.getNomComplet() + " a bien été acceuili dans le service "+ serviceAcceuil.getNom());
+                HopitalFantastique.getListeDeCreatureEnAttente().remove(creatureAttente); 
+                break;
 
             default:
                 System.out.println("Action invalide. Veuillez réessayer.");
@@ -95,7 +149,7 @@ public class Medecin extends Creature {
     // Méthode pour choisir un service médical parmi une liste
     private ServiceMedical choisirService(Scanner scanner, List<ServiceMedical> services) {
         for (int i = 0; i < services.size(); i++) {
-            System.out.println((i + 1) + ". " + services.get(i).getNom());
+            System.out.println((i + 1) + ". " + services.get(i).getNom() +" [" + services.get(i).getNombreCreatures()+ "/" +services.get(i).getCapaciteMax() + "]");
         }
         int choix = scanner.nextInt();
         return services.get(Math.max(0, Math.min(choix - 1, services.size() - 1)));
@@ -104,6 +158,15 @@ public class Medecin extends Creature {
     // Méthode pour choisir une créature parmi une liste
     private Creature choisirCreature(Scanner scanner, ServiceMedical service) {
         List<Creature> creatures = service.getCreatures();
+        for (int i = 0; i < creatures.size(); i++) {
+            System.out.println((i + 1) + ". " + creatures.get(i).getNomComplet());
+        }
+        int choix = scanner.nextInt();
+        return creatures.get(Math.max(0, Math.min(choix - 1, creatures.size() - 1)));
+    }
+    
+    private Creature choisirCreatureEnAttente(Scanner scanner) {
+        List<Creature> creatures = HopitalFantastique.getListeDeCreatureEnAttente();
         for (int i = 0; i < creatures.size(); i++) {
             System.out.println((i + 1) + ". " + creatures.get(i).getNomComplet());
         }
