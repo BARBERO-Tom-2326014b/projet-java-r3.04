@@ -64,16 +64,6 @@ public class Meute {
         return this.coupleAlpha;
     }
 
-    // Vérifie si un conflit de domination est présent dans la meute
-    public boolean estConflitPresent() {
-        for (Lycanthrope l : lycanthropes) {
-            if (l.getRang().equals("ω")) {
-                return true; // Conflit si un lycanthrope ω est présent
-            }
-        }
-        return false; // Aucun conflit si il n'y a pas de ω
-    }
-
     // Getters et setters pour le nom et les lycanthropes
     public String getNom() {
         return this.nom;
