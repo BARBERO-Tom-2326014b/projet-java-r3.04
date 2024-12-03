@@ -1,12 +1,22 @@
 package personnage;
 
+/**
+ * Représente une maladie avec un niveau d'intensité variable.
+ * Permet de gérer l'évolution du niveau de la maladie et de vérifier si elle est létale.
+ */
 public class Maladie {
     private String nomComplet;
     private String nomAbrege;
     private int niveauActuel;
     private int niveauMax;
 
-    
+    /**
+     * Constructeur de la classe Maladie.
+     *
+     * @param nomComplet Le nom complet de la maladie.
+     * @param nomAbrege  Le nom abrégé de la maladie.
+     * @param niveauMax  Le niveau maximum de la maladie.
+     */
     public Maladie(String nomComplet, String nomAbrege, int niveauMax) {
         this.nomComplet = nomComplet;
         this.nomAbrege = nomAbrege;
@@ -14,21 +24,39 @@ public class Maladie {
         this.niveauActuel = 0; // Niveau initial de la maladie
     }
 
-    // Getters et Setters
+    /**
+     * Retourne le nom complet de la maladie.
+     *
+     * @return Le nom complet de la maladie.
+     */
     public String getNomComplet() {
         return nomComplet;
     }
 
+    /**
+     * Retourne le nom abrégé de la maladie.
+     *
+     * @return Le nom abrégé de la maladie.
+     */
     public String getNomAbrege() {
         return nomAbrege;
     }
 
+    /**
+     * Retourne le niveau actuel de la maladie.
+     *
+     * @return Le niveau actuel.
+     */
     public int getNiveauActuel() {
         return niveauActuel;
     }
 
+    /**
+     * Définit le niveau actuel de la maladie en respectant les limites (0 à niveauMax).
+     *
+     * @param niveau Le nouveau niveau de la maladie.
+     */
     public void setNiveauActuel(int niveau) {
-    	// Validation des limites
         if (niveau < 0) {
             this.niveauActuel = 0; // Niveau minimal
         } else if (niveau > niveauMax) {
@@ -38,30 +66,59 @@ public class Maladie {
         }
     }
 
+    /**
+     * Retourne le niveau maximum de la maladie.
+     *
+     * @return Le niveau maximum.
+     */
     public int getNiveauMax() {
         return niveauMax;
     }
 
-    // Méthode pour augmenter le niveau
+    /**
+     * Augmente le niveau de la maladie.
+     *
+     * @param increment Valeur à ajouter au niveau actuel.
+     */
     public void augmenterNiveau(int increment) {
         setNiveauActuel(niveauActuel + increment);
     }
 
-    // Méthode pour diminuer le niveau
+    /**
+     * Diminue le niveau de la maladie.
+     *
+     * @param decrement Valeur à soustraire du niveau actuel.
+     */
     public void diminuerNiveau(int decrement) {
         setNiveauActuel(niveauActuel - decrement);
     }
 
-    // Vérifie si la maladie est létale
+    /**
+     * Vérifie si la maladie est létale (le niveau actuel atteint ou dépasse le niveau maximum).
+     *
+     * @return True si la maladie est létale, sinon False.
+     */
     public boolean estLetale() {
-    	return this.niveauActuel >= this.niveauMax;
+        return this.niveauActuel >= this.niveauMax;
     }
 
+    /**
+     * Retourne une représentation textuelle de la maladie.
+     *
+     * @return Une chaîne décrivant la maladie, son niveau actuel et son niveau maximum.
+     */
     @Override
     public String toString() {
         return nomComplet + " (" + nomAbrege + ") - Niveau: " + niveauActuel + "/" + niveauMax;
     }
-    // Fabrique de maladies prédéfinies
+
+    /**
+     * Crée une maladie prédéfinie basée sur un type donné.
+     *
+     * @param type Le type de maladie (par exemple, "MDC", "FOMO", etc.).
+     * @return Une instance de Maladie correspondant au type.
+     * @throws IllegalArgumentException Si le type est inconnu.
+     */
     public static Maladie creerMaladie(String type) {
         switch (type) {
             case "MDC":

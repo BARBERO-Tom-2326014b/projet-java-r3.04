@@ -4,6 +4,13 @@ import java.util.List;
 import java.util.Scanner;
 
 public class main {
+	/**
+     * Méthode principale qui initialise l'hôpital et gère les choix de l'utilisateur.
+     * Elle affiche un menu permettant de consulter les statistiques de l'hôpital,
+     * simuler l'activité des médecins, ou quitter l'application.
+     * 
+     * @param args Arguments de la ligne de commande (non utilisés ici).
+     */
     public static void main(String[] args) {
         // Initialiser l'hôpital
         HopitalFantastique hopital = new HopitalFantastique("Hôpital Fantastique", 10);
@@ -20,9 +27,9 @@ public class main {
             // Afficher le menu principal
             System.out.println("\nQue souhaitez-vous faire ?");
             System.out.println("1. Afficher les statistiques de l'hôpital");
-            System.out.println("2. Admettre une créature dans un service");
-            System.out.println("3. Passer la main aux médecins (simulation)");
-            System.out.println("4. Quitter");
+            //System.out.println("2. Admettre une créature dans un service");
+            System.out.println("2. Passer la main aux médecins (simulation)");
+            System.out.println("3. Quitter");
             System.out.print("Votre choix : ");
 
             int choix = scanner.nextInt();
@@ -32,15 +39,16 @@ public class main {
                 case 1:
                     hopital.afficherStatistiques();
                     break;
+                    /*
                 case 2:
                     admettreCreature(scanner, hopital);
-                    break;
-                case 3:
+                    break; */
+                case 2:
                     System.out.print("Combien d'intervalles de temps simuler ? ");
                     int intervalle = scanner.nextInt();
                     hopital.gestionTemps(intervalle);
                     break;
-                case 4:
+                case 3:
                     System.out.println("Merci d'avoir joué ! À bientôt.");
                     quitter = true;
                     break;
@@ -52,6 +60,12 @@ public class main {
         scanner.close();
     }
 
+    /**
+     * Méthode d'initialisation des services médicaux et des médecins dans l'hôpital.
+     * Elle crée des services (Elf, Orque, Vampire) et y admet des créatures de type correspondant.
+     * 
+     * @param hopital L'hôpital dans lequel ajouter les services et créatures.
+     */
     private static void initialiserHopital(HopitalFantastique hopital) {
         // Exemple de services et médecins ajoutés
         ServiceMedicalStandard serviceElfes = new ServiceMedicalStandard("Service des Elfes elfique", 10.5, 20, 1500); // Capacité de 10
@@ -105,6 +119,7 @@ public class main {
         // Ces créatures pourraient être ajoutées à d'autres services en fonction de leurs caractéristiques
     }
     
+    /*
     
     //TODO se casser la tete pour faire ca 
 
@@ -177,4 +192,5 @@ public class main {
         System.out.println("Choix de service invalide.");
     }
 }
+*/
 }

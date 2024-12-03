@@ -1,4 +1,5 @@
 package personnage;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -9,94 +10,142 @@ public abstract class Creature {
     private double poids;
     private double taille;
     private int age;
-    private int moral;//donne la plus importante
-    private List<Maladie> maladies;
-    private int hurlementsConsecutifs = 0; // Compteur de hurlements consécutifs
+    private int moral; // Niveau de moral de la créature, représentant son état mental.
+    private List<Maladie> maladies; // Liste des maladies dont souffre la créature.
+    private int hurlementsConsecutifs = 0; // Compteur de hurlements consécutifs.
+    private double chanceDeContamination = Math.random(); // Génère un nombre entre 0 et 1
 
-    // Constructeur de base
+    /**
+     * Constructeur de base pour initialiser une créature avec ses caractéristiques de base.
+     * 
+     * @param nomComplet Le nom complet de la créature.
+     * @param sexe Le sexe de la créature.
+     * @param poids Le poids de la créature.
+     * @param taille La taille de la créature.
+     * @param age L'âge de la créature.
+     */
     public Creature(String nomComplet, String sexe, double poids, double taille, int age) {
         this.nomComplet = nomComplet;
         this.sexe = sexe;
         this.poids = poids;
         this.taille = taille;
         this.age = age;
-        this.moral = 100; // Moral initial, supposons qu'il commence à 100
+        this.moral = 100; // Le moral initial est défini à 100.
         this.maladies = new ArrayList<>();
     }
 
-
     // Getters et Setters
+
+    /**
+     * @return Le nom complet de la créature.
+     */
     public String getNomComplet() {
         return nomComplet;
     }
 
+    /**
+     * @return Le sexe de la créature.
+     */
     public String getSexe() {
         return sexe;
     }
 
+    /**
+     * @return Le poids de la créature.
+     */
     public double getPoids() {
         return poids;
     }
 
+    /**
+     * @return La taille de la créature.
+     */
     public double getTaille() {
         return taille;
     }
 
+    /**
+     * @return L'âge de la créature.
+     */
     public int getAge() {
         return age;
     }
 
+    /**
+     * @return Le moral actuel de la créature.
+     */
     public int getMoral() {
         return moral;
     }
-    
-    
 
+    /**
+     * Définit le moral de la créature.
+     * 
+     * @param moral Le nouveau niveau de moral.
+     */
     public void setMoral(int moral) {
-		this.moral = moral;
-	}
+        this.moral = moral;
+    }
 
-	public List<Maladie> getMaladies() {
+    /**
+     * @return La liste des maladies dont souffre la créature.
+     */
+    public List<Maladie> getMaladies() {
         return maladies;
     }
 
+    /**
+     * Fait attendre la créature, réduisant son moral et déclenchant potentiellement des hurlements.
+     * 
+     * @param proches Liste des créatures proches pouvant être affectées.
+     */
     public void attendre(List<Creature> proches) {
-    	 int chance = (int)(Math.random() * 2);
+        int chance = (int) (Math.random() * 2);
         moral -= 10;
         if (moral < 0) moral = 0;
         System.out.println(nomComplet + " attend... Moral actuel : " + moral);
-        if (moral<30 && chance == 1)
-        if (moral == 0) {
-            hurler(proches);
+        if (moral < 30 && chance == 1) {
+            if (moral == 0) {
+                hurler(proches);
+            }
         }
-        
     }
-    
+
+    /**
+     * La créature hurle lorsque son moral est bas, exprimant son désespoir.
+     * 
+     * @param proches Liste des créatures proches pouvant être affectées.
+     */
     public void hurler(List<Creature> proches) {
     	if (hurlementsConsecutifs>1) {
-    		sEmporter(proches);
+    		sEmporter(proches,chanceDeContamination);
     	}  
     	else if (moral <= 10) {
         System.out.println(nomComplet + " hurle de désespoir !");
         hurlementsConsecutifs++;
     	}
+    
+    
     }
+    
 
-    // S’emporter : alternative aux hurlements consécutifs
-    public void sEmporter(List<Creature> proches) {
+    /**
+     * La créature s'emporte lorsqu'elle a hurlé plusieurs fois et peut contaminer d'autres créatures.
+     * 
+     * @param proches Liste des créatures proches pouvant être contaminées.
+     */
+    public void sEmporter(List<Creature> proches,double chanceDeContamination) {
     	if (hurlementsConsecutifs>1) {
     		System.out.println(nomComplet + " s'emporte avec fureur !");
     	}   
     	else {
             System.out.println(nomComplet + " ne peut pas s'emporter car il n'a pas assez hurlé (hurlementsConsecutifs = " + hurlementsConsecutifs + ").");
-        }
-    	// Ajout d'une chance de contamination
-        double chanceDeContamination = Math.random(); // Génère un nombre entre 0 et 1
-        if (chanceDeContamination > 0 && !proches.isEmpty()) { // 75% de chance de contaminer
+    	}   
+        if (chanceDeContamination > 0.25 && !proches.isEmpty()) { // 75% de chance de contaminer
             contaminerAutres(proches);
         }
         else {
-            if (chanceDeContamination <= 0) {
+            if (chanceDeContamination <= 0.25) {
                 System.out.println("Pas de contamination cette fois. ");
             }
             if (proches.isEmpty()) {
@@ -104,36 +153,44 @@ public abstract class Creature {
             }
         }
     }
-    
- // Contamine une autre créature aléatoire
+
+    /**
+     * Contamine une autre créature proche en lui transmettant une maladie aléatoire.
+     * 
+     * @param proches Liste des créatures proches pouvant être contaminées.
+     */
     private void contaminerAutres(List<Creature> proches) {
-    	// Filtrer pour exclure la créature elle-même
         List<Creature> ciblesValides = proches.stream().filter(proche -> !proche.equals(this)).toList();
         if (!maladies.isEmpty() && !ciblesValides.isEmpty()) {
             Creature cible = ciblesValides.get(new Random().nextInt(ciblesValides.size()));
             Maladie maladie = maladies.get(new Random().nextInt(maladies.size()));
             cible.tomberMalade(maladie);
             System.out.println(nomComplet + " contamine " + cible.getNomComplet() + " avec " + maladie + " en s'emportant.");
-        }
-        else {
-        	System.out.println(nomComplet+" n'est pas malade donc ne contamine pas");
+        } else {
+            System.out.println(nomComplet + " n'est pas malade donc ne contamine pas.");
         }
     }
 
-    // Tomber malade : ajoute une maladie
+    /**
+     * Ajoute une maladie à la créature, réduisant son moral.
+     * 
+     * @param maladie La maladie contractée par la créature.
+     */
     public void tomberMalade(Maladie maladie) {
         maladies.add(maladie);
-        moral -= 30; // Chute du moral à chaque nouvelle maladie
+        moral -= 30;
         System.out.println(nomComplet + " tombe malade de " + maladie + ". Moral : " + moral);
         if (maladie.estLetale()) {
             System.out.println(nomComplet + " est en danger immédiat à cause de " + maladie.getNomComplet() + " !");
         }
     }
 
-    // Être soignée : soigne une maladie et augmente le moral
+    /**
+     * Soigne une maladie de la créature, augmentant légèrement son moral.
+     */
     public void etreSoignee() {
         if (!maladies.isEmpty()) {
-        	Maladie maladieSoignee = maladies.remove(0);
+            Maladie maladieSoignee = maladies.remove(0);
             moral += 20;
             System.out.println(nomComplet + " est soigné de " + maladieSoignee + ". Moral : " + moral);
         } else {
@@ -141,20 +198,22 @@ public abstract class Creature {
         }
     }
 
-    // Trépasser : lorsque le nombre de maladies est trop élevé ou maladie létale
+    /**
+     * Vérifie si la créature est morte à cause d'une maladie létale ou d'un trop grand nombre de maladies.
+     * 
+     * @return {@code true} si la créature est morte, sinon {@code false}.
+     */
     public boolean estMort() {
         for (Maladie maladie : maladies) {
-            if (maladie.estLetale()) { // Si une maladie est létale
-                System.out.println("\n " +nomComplet + " a trépassé à cause de " + maladie.getNomComplet() + ""
-                		+ "\n ");
+            if (maladie.estLetale()) {
+                System.out.println("\n" + nomComplet + " a trépassé à cause de " + maladie.getNomComplet() + "\n");
                 return true;
             }
         }
-        if (maladies.size() > 5) { // Ou s'il y a trop de maladies
+        if (maladies.size() > 5) {
             System.out.println(nomComplet + " a trépassé à cause du trop grand nombre de maladies.");
             return true;
         }
         return false;
     }
-
 }
