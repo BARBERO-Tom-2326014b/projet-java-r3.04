@@ -13,6 +13,7 @@ public abstract class Creature {
     private int moral; // Niveau de moral de la créature, représentant son état mental.
     private List<Maladie> maladies; // Liste des maladies dont souffre la créature.
     private int hurlementsConsecutifs = 0; // Compteur de hurlements consécutifs.
+    private double chanceDeContamination = Math.random(); // Génère un nombre entre 0 et 1
 
     /**
      * Constructeur de base pour initialiser une créature avec ses caractéristiques de base.
@@ -116,13 +117,17 @@ public abstract class Creature {
      * @param proches Liste des créatures proches pouvant être affectées.
      */
     public void hurler(List<Creature> proches) {
-        if (hurlementsConsecutifs > 1) {
-            sEmporter(proches);
-        } else if (moral <= 10) {
-            System.out.println(nomComplet + " hurle de désespoir !");
-            hurlementsConsecutifs++;
-        }
+    	if (hurlementsConsecutifs>1) {
+    		sEmporter(proches,chanceDeContamination);
+    	}  
+    	else if (moral <= 10) {
+        System.out.println(nomComplet + " hurle de désespoir !");
+        hurlementsConsecutifs++;
+    	}
+    
+    
     }
+    
 
     /**
      * La créature s'emporte lorsqu'elle a hurlé plusieurs fois et peut contaminer d'autres créatures.
