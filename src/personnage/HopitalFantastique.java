@@ -2,6 +2,10 @@ package personnage;
 
 import java.util.*;
 
+/**
+ * Classe représentant un hôpital fantastique capable de gérer des créatures, 
+ * des services médicaux et des médecins.
+ */
 public class HopitalFantastique {
     private String nom;
     private int nombreMaxServices;
@@ -10,6 +14,13 @@ public class HopitalFantastique {
     public static boolean perdu = false;
     private static List<Creature> ListeDeCreatureEnAttente;
 
+    /**
+     * Constructeur de l'hôpital fantastique.
+     * 
+     * @param nom               Nom de l'hôpital.
+     * @param nombreMaxServices Nombre maximum de services médicaux dans l'hôpital.
+     */
+    
     public HopitalFantastique(String nom, int nombreMaxServices) {
         this.nom = nom;
         this.nombreMaxServices = nombreMaxServices;
@@ -18,10 +29,20 @@ public class HopitalFantastique {
         this.ListeDeCreatureEnAttente = new ArrayList<>();
     }
     
+    /**
+     * Récupère la liste des créatures en attente d'admission.
+     * 
+     * @return La liste des créatures en attente.
+     */
     public static List<Creature> getListeDeCreatureEnAttente() {
 		return ListeDeCreatureEnAttente;
 	}
     
+    /**
+     * Ajoute un service médical à l'hôpital.
+     * 
+     * @param service Le service médical à ajouter.
+     */
 
     public void ajouterServiceMedical(ServiceMedical service) {
         if (servicesMedicals.size() < nombreMaxServices) {
@@ -31,6 +52,11 @@ public class HopitalFantastique {
         }
     }
     
+    /**
+     * Liste toutes les créatures présentes dans les services médicaux de l'hôpital.
+     * 
+     * @return Une liste des créatures présentes.
+     */
 
     public List<Creature> listerCreatures() {
         List<Creature> creaturesDansHopital = new ArrayList<>();
@@ -43,12 +69,23 @@ public class HopitalFantastique {
         return creaturesDansHopital;
     }
     
-    
+    /**
+     * Ajoute un médecin à l'hôpital.
+     * 
+     * @param medecin Le médecin à ajouter.
+     */
     
     public void ajouterMedecin(Medecin medecin) {
         medecins.add(medecin);
     }
     
+    /**
+     * Vérifie si une créature est compatible avec un service médical spécifique.
+     * 
+     * @param creature    La créature à vérifier.
+     * @param serviceVoulu Le service médical souhaité.
+     * @return True si compatible, sinon False.
+     */
     public static boolean verifieCompatibilite(Creature creature, ServiceMedical serviceVoulu) {
         // Obtenez le nom de la classe de la créature
         String nomClass = creature.getClass().getSimpleName(); // Utilisez getSimpleName() pour obtenir le nom simple de la classe
@@ -97,7 +134,12 @@ public class HopitalFantastique {
         }
     }
 
-    
+    /**
+     * Admet une créature dans un service médical si les conditions sont remplies.
+     * 
+     * @param creature     La créature à admettre.
+     * @param serviceVoulu Le service médical où la créature sera admise.
+     */
     public static void admettreCreature(Creature creature, ServiceMedical serviceVoulu) {
     	if (serviceVoulu.getNombreCreatures() < serviceVoulu.getCapaciteMax()) {
         	if(verifieCompatibilite(creature, serviceVoulu)) {
@@ -112,6 +154,9 @@ public class HopitalFantastique {
             System.out.println("Tout les services sont pleins ");
         }
     }
+    /**
+     * Affiche les statistiques globales de l'hôpital, y compris les services et les créatures.
+     */
 
     public void afficherStatistiques() {
         System.out.println("Hôpital fantastique : " + nom);
@@ -121,6 +166,11 @@ public class HopitalFantastique {
         }
     }
 
+    /**
+     * Calcule le nombre total de créatures dans l'hôpital.
+     * 
+     * @return Le nombre total de créatures.
+     */
     public int getNombreTotalCreatures() {
         int total = 0;
         for (ServiceMedical service : servicesMedicals) {
@@ -129,6 +179,11 @@ public class HopitalFantastique {
         return total;
     }
     
+    /**
+     * Détermine si une nouvelle créature doit être ajoutée à la liste d'attente (10 % de chance).
+     * 
+     * @param ListeDeCreatureEnAttente La liste des créatures en attente.
+     */
     public void ChanceDarriverCreature (List<Creature> ListeDeCreatureEnAttente) {
     	Random random = new Random();
     	int chance = random.nextInt(100); // 0 à 99 inclus
@@ -139,10 +194,12 @@ public class HopitalFantastique {
         }
     	
     }
+    
     /**
+     * Ajoute une créature aléatoire à la liste d'attente.
      * 
-     * @param ListeDeCreatureEnAttente
-     * @return
+     * @param ListeDeCreatureEnAttente La liste des créatures en attente.
+     * @return La liste mise à jour avec la nouvelle créature.
      */
     public static List<Creature> ajouterCreaturesAleatoires(List<Creature> ListeDeCreatureEnAttente) {
         Random random = new Random();
@@ -196,8 +253,9 @@ public class HopitalFantastique {
     }
     
     /**
+     * Liste tous les services médicaux de l'hôpital.
      * 
-     * @return
+     * @return Une liste des services médicaux.
      */
     public List<ServiceMedical> listerServices() {
         List<ServiceMedical> servicesStandard = new ArrayList<>();
@@ -209,8 +267,12 @@ public class HopitalFantastique {
         return servicesStandard;
     }
     
-    // Méthode pour modéliser l'aspect temporel et passer la main aux médecins
-    //
+    /**
+     * Simule plusieurs cycles de gestion de l'hôpital.
+     * Les médecins, services, et créatures effectuent leurs actions dans des threads séparés.
+     * 
+     * @param intervalle Le nombre de cycles à simuler.
+     */
     public void gestionTemps(int intervalle) {
         Random rand = new Random();
         
@@ -318,6 +380,9 @@ public class HopitalFantastique {
     }
 
 
+    /**
+     * Affiche un message de perte lorsque les conditions de défaite sont atteintes.
+     */
     
     private void afficherMessagePerte() {
         String message = "vous avez perdu";

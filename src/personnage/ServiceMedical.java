@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * Classe abstraite représentant un service médical dans le jeu.
+ * Permet de gérer les créatures, leurs états, et de soigner leurs maladies.
+ */
 // Classe de base pour les services médicaux
 abstract class ServiceMedical {
     private String nom;
@@ -13,6 +17,15 @@ abstract class ServiceMedical {
     private List<Creature> creatures;
     private double budget;
     private boolean Aperdu = false;
+    
+    /**
+     * Constructeur de la classe ServiceMedical.
+     *
+     * @param nom         Le nom du service médical.
+     * @param superficie  La superficie du service en m².
+     * @param capaciteMax La capacité maximale du service.
+     * @param budget      Le budget initial du service.
+     */
 
     public ServiceMedical(String nom, double superficie, int capaciteMax, double budget) {
         this.nom = nom;
@@ -22,38 +35,69 @@ abstract class ServiceMedical {
         this.budget = budget;
     }
 
+
+
+    /**
+     * @return Le nom du service médical.
+     */
     public String getNom() {
         return nom;
     }
     
+    /**
+     * Définit l'état du service comme ayant échoué à une tâche.
+     */
     public void setAperdu() {
     	Aperdu = true;
     }
     
+    /**
+     * @return {@code true} si le service a échoué à une tâche, {@code false} sinon.
+     */
     public boolean getAperdu() {
     	return Aperdu;
     }
 
+    /**
+     * @return La superficie du service en m².
+     */
     public double getSuperficie() {
         return superficie;
     }
 
+    /**
+     * @return La capacité maximale du service.
+     */
     public int getCapaciteMax() {
         return capaciteMax;
     }
 
+    /**
+     * @return Le budget actuel du service.
+     */
     public double getBudget() {
         return budget;
     }
 
+    /**
+     * Définit le budget du service.
+     *
+     * @param budget Le nouveau budget.
+     */
     public void setBudget(double budget) {
         this.budget = budget;
     }
 
+    /**
+     * @return La liste des créatures prises en charge par le service.
+     */
     public List<Creature> getCreatures() {
         return creatures;
     }
     
+    /**
+     * @return Le nombre de créatures actuellement prises en charge.
+     */
     public int getNombreCreatures() {
     	return creatures.size();
     }
@@ -61,7 +105,11 @@ abstract class ServiceMedical {
     
     
     
-    
+    /**
+     * Retire les créatures mortes de la liste et marque le service comme ayant échoué si des morts sont détectées.
+     *
+     * @param creatures La liste des créatures à vérifier.
+     */
     public void maladieTropEvoluer(List<Creature> creatures) {
         List<Creature> ListeDesMorts = new ArrayList<>();
         for (Creature creature : creatures) {
@@ -77,6 +125,12 @@ abstract class ServiceMedical {
     
     
  // Méthode pour modifier l'état des créatures
+    
+    /**
+     * Modifie de manière aléatoire l'état des créatures (moral, maladies).
+     *
+     * @param creatures La liste des créatures à modifier.
+     */
     public static void modifierEtatCreatures(List<Creature> creatures) {
         Random random = new Random();
 
@@ -101,6 +155,9 @@ abstract class ServiceMedical {
         }
     }
     
+    /**
+     * Modifie de manière aléatoire les caractéristiques du service (budget, superficie, capacité).
+     */
     public void modifierEtatService() {
         Random random = new Random();
 
@@ -152,6 +209,11 @@ abstract class ServiceMedical {
     }
 
     // Ajouter une maladie aléatoire à une créature
+    /**
+     * 
+     * @param ajoute une maladie de maniere aleatoire a une creature
+     * 
+     */
     private static void ajouterMaladie(Creature creature) {
         // Liste des maladies avec leur nom et type
         String[] maladies = {"MDC", "FOMO", "DRS", "PEC", "ZPL", "NDMAD"};
@@ -200,7 +262,11 @@ abstract class ServiceMedical {
     }
 
 
-    // Faire évoluer une maladie (augmenter son niveau)
+    /** Faire évoluer une maladie (augmenter son niveau)
+
+     * 
+     * @param creature
+     */
     private static void evoluerMaladie(Creature creature) {
         List<Maladie> maladies = creature.getMaladies();
         Maladie maladie = maladies.get(new Random().nextInt(maladies.size()));
@@ -220,6 +286,9 @@ abstract class ServiceMedical {
         creature.tomberMalade(maladie);
     } */
 
+    /**
+     * methode d'affichage du service
+     */
     public void afficherCaracteristiques() {
         System.out.println("Nom: " + nom);
         System.out.println("Superficie: " + superficie + " m²");
@@ -233,11 +302,21 @@ abstract class ServiceMedical {
         }
     }
 
+    /**Retire une creature d'un service ( le retire de la list<creature> du service )
+     * 
+     * 
+     * @param creature
+     */
     public void retirerCreature(Creature creature) {
         creatures.remove(creature);
     }
 
 
+    /**
+     *  enleve une maladie de la list des maladies d'une creature avec un % de chance,
+     *  a un systeme de choix pour avoir une seule creature 
+     *  eneleve seulement une maladie 
+     */
     public void soignerCreatures() {
         if (getCreatures().isEmpty()) {
             System.out.println("Aucune créature à soigner.");
