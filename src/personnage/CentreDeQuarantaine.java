@@ -36,8 +36,7 @@ public class CentreDeQuarantaine extends ServiceMedical {
      * Méthode qui permet de réviser le budget du centre de quarantaine.
      * Cette révision prend en compte les coûts supplémentaires liés à l'isolation.
      */
-    @Override
-    public void reviserBudget() {
-        System.out.println("Révision du budget pour le centre de quarantaine, en prenant en compte l'isolation.");
+    public void reviserBudget(double newBudget) {
+        setBudget(newBudget);
     }
 }

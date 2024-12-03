@@ -134,18 +134,19 @@ public abstract class Creature {
      * 
      * @param proches Liste des créatures proches pouvant être contaminées.
      */
-    public void sEmporter(List<Creature> proches) {
-        if (hurlementsConsecutifs > 1) {
-            System.out.println(nomComplet + " s'emporte avec fureur !");
-        } else {
+    public void sEmporter(List<Creature> proches,double chanceDeContamination) {
+    	if (hurlementsConsecutifs>1) {
+    		System.out.println(nomComplet + " s'emporte avec fureur !");
+    	}   
+    	else {
             System.out.println(nomComplet + " ne peut pas s'emporter car il n'a pas assez hurlé (hurlementsConsecutifs = " + hurlementsConsecutifs + ").");
-        }
-        double chanceDeContamination = Math.random();
-        if (chanceDeContamination > 0 && !proches.isEmpty()) {
+    	}   
+        if (chanceDeContamination > 0.25 && !proches.isEmpty()) { // 75% de chance de contaminer
             contaminerAutres(proches);
-        } else {
-            if (chanceDeContamination <= 0) {
-                System.out.println("Pas de contamination cette fois.");
+        }
+        else {
+            if (chanceDeContamination <= 0.25) {
+                System.out.println("Pas de contamination cette fois. ");
             }
             if (proches.isEmpty()) {
                 System.out.println("Aucune créature proche à contaminer.");

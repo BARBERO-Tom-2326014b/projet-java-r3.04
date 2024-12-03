@@ -291,8 +291,8 @@ class TestServiceMedical {
             System.out.println((elfe.getMaladies()));
             crypte.soignerCreatures(); 
             assertEquals(1, elfe.getMaladies().size());
-        }*/
-        
+        }
+        */
         @Test
         public void testReviserBudget() {
         	quarante.reviserBudget(600);
