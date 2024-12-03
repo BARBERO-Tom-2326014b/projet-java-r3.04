@@ -71,7 +71,7 @@ public class Meute {
             couple.setMale(meilleurMâle);
             System.out.println("Couple Alpha défini: " + meilleurMâle.getNom() + " et " + meilleureFemelle.getNom());
         } else {
-            System.out.println("Impossible de définir un couple Alpha: Mâle et/ou Femelle non trouvés.");
+            System.out.println("Impossible de définir un couple Alpha: Mâle Adulte et/ou Femelle Adulte non trouvés.");
         }
         return couple;
     }
