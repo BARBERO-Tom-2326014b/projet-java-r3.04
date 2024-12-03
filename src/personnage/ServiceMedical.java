@@ -132,9 +132,8 @@ abstract class ServiceMedical {
      * @param creatures La liste des créatures à modifier.
      */
     public static void modifierEtatCreatures(List<Creature> creatures) {
-        Random random = new Random();
-
         for (Creature creature : creatures) {
+        	Random random = new Random();
             // Modification aléatoire du moral
             int changementMoral = random.nextInt(21) - 10; // Valeur entre -10 et +10
             int nouveauMoral = creature.getMoral() + changementMoral;
@@ -310,70 +309,6 @@ abstract class ServiceMedical {
     public void retirerCreature(Creature creature) {
         creatures.remove(creature);
     }
-
-
-    /**
-     *  enleve une maladie de la list des maladies d'une creature avec un % de chance,
-     *  a un systeme de choix pour avoir une seule creature 
-     *  eneleve seulement une maladie 
-     */
-    public void soignerCreatures() {
-        if (getCreatures().isEmpty()) {
-            System.out.println("Aucune créature à soigner.");
-            return;
-        }
-
-        // Afficher les créatures présentes dans le service
-        System.out.println("Liste des créatures présentes :");
-        for (int i = 0; i < getCreatures().size(); i++) {
-            Creature creature = getCreatures().get(i);
-            System.out.println(i + 1 + ". " + creature.getNomComplet() + " (Moral: " + creature.getMoral() + ", Maladies: " + creature.getMaladies() + ")");
-        }
-
-        // Demander à l'utilisateur de choisir une créature à soigner
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Entrez le numéro de la créature à soigner : ");
-        int choix = scanner.nextInt();
-        if (choix < 1 || choix > getCreatures().size()) {
-            System.out.println("Choix invalide.");
-            soignerCreatures();
-        }
-
-        Creature creatureASoigner = getCreatures().get(choix - 1);
-
-        // Vérifier si la créature a des maladies à soigner
-        if (creatureASoigner.getMaladies().isEmpty()) {
-            System.out.println(creatureASoigner.getNomComplet() + " n'a aucune maladie à soigner.");
-            soignerCreatures();
-        }
-
-        // Afficher les maladies de la créature
-        System.out.println("Liste des maladies de " + creatureASoigner.getNomComplet() + " :");
-        for (int i = 0; i < creatureASoigner.getMaladies().size(); i++) {
-            Maladie maladie = creatureASoigner.getMaladies().get(i);
-            System.out.println(i + 1 + ". " + maladie);
-        }
-
-        // Demander à l'utilisateur de choisir une maladie à soigner
-        System.out.print("Entrez le numéro de la maladie à soigner : ");
-        int maladieChoisie = scanner.nextInt();
-        if (maladieChoisie < 1 || maladieChoisie > creatureASoigner.getMaladies().size()) {
-            System.out.println("Choix invalide.");
-            return;
-        }
-
-        Maladie maladieASoigner = creatureASoigner.getMaladies().get(maladieChoisie - 1);
-
-        // Ajouter une chance de réussir le soin
-        if (new Random().nextInt(100) < 70) { // 70% de chance de réussir
-            System.out.println("Le soin de " + creatureASoigner.getNomComplet() + " pour la maladie " + maladieASoigner.getNomComplet() + " est un succès !");
-            maladieASoigner.diminuerNiveau(1); // Diminuer le niveau de la maladie
-        } else {
-            // Si le soin échoue, la maladie évolue
-            System.out.println("Le soin de " + creatureASoigner.getNomComplet() + " pour la maladie " + maladieASoigner.getNomComplet() + " a échoué. La maladie évolue.");
-            maladieASoigner.augmenterNiveau(1); // Augmenter le niveau de la maladie
-        }
-    }
-
+    
     public abstract void reviserBudget();
 }

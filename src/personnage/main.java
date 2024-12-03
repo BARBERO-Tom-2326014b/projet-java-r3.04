@@ -72,13 +72,13 @@ public class main {
         CentreDeQuarantaine serviceOrques = new CentreDeQuarantaine("Service des Orques", 20, 10, 900, true); // Capacité de 8	
         CentreDeQuarantaine serviceHommeBete = new CentreDeQuarantaine("Service des Hommes Betes", 20, 3, 900, true); // Capacité de 8	
         CentreDeQuarantaine serviceLycanthrope = new CentreDeQuarantaine("Service des Lycanthrope", 20, 3, 900, true); // Capacité de 8	
-        Crypte serviceVampire = new Crypte("Service des Hommes Betes", 20, 3, 900, 20,2 ); // Capacité de 8	
+        Crypte serviceVampire = new Crypte("Service des Vampires", 20, 3, 900, 20,2 ); // Capacité de 8	
         Crypte LaCrypteDesMortsVivants = new Crypte("La Crypte Des Morts Vivants", 8, 6, 200, 10, 0);
         
         hopital.ajouterServiceMedical(serviceElfes);
         hopital.ajouterServiceMedical(serviceVampire);
         hopital.ajouterServiceMedical(serviceOrques);
-        hopital.ajouterServiceMedical(serviceVampire);
+        hopital.ajouterServiceMedical(serviceLycanthrope);
         hopital.ajouterServiceMedical(LaCrypteDesMortsVivants);
 
         // Ajout des médecins
@@ -95,13 +95,13 @@ public class main {
         hopital.admettreCreature(elfe2, serviceElfes);
 
         // Service des Orques : Créatures de type Orque
-        Orque orque1 = new Orque("Grommash", "M", 120, 2.10, 45);
+        Orque orque1 = new Orque("Martin le gros orque", "M", 120, 2.10, 45);
         Orque orque2 = new Orque("Thrall", "M", 115, 2.05, 50);
         hopital.admettreCreature(orque1, serviceOrques);
         hopital.admettreCreature(orque2, serviceOrques);
         // Créatures supplémentaires dans d'autres services
         Vampire vampire1 = new Vampire("Vlad", "M", 80, 1.85, 300);
-        Vampire vampire2 = new Vampire("Elena", "F", 70, 1.70, 250);
+        Vampire vampire2 = new Vampire("MiaK", "F", 70, 1.70, 250);
         hopital.admettreCreature(vampire1, serviceVampire);
         hopital.admettreCreature(vampire2, serviceVampire);
         Zombie zombie1 = new Zombie("Zeke", "M", 90, 1.85, 40);

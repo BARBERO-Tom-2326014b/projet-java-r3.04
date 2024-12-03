@@ -286,7 +286,7 @@ public class HopitalFantastique {
                 Thread thread = new Thread(() -> {
                     synchronized (this) {
                         if (!perdu) { // Arrête les actions si perdu est déjà vrai
-                            service.modifierEtatCreatures(service.getCreatures());
+                            ServiceMedical.modifierEtatCreatures(service.getCreatures());
                             service.modifierEtatService();
 
                         }
@@ -294,6 +294,8 @@ public class HopitalFantastique {
                 });
                 threads.add(thread);
             }
+            
+            
             Thread threadEvenHopital = new Thread(() -> {
             	synchronized (this) {
             		ChanceDarriverCreature(ListeDeCreatureEnAttente);
@@ -325,7 +327,22 @@ public class HopitalFantastique {
                             serviceX.maladieTropEvoluer(serviceX.getCreatures());
                             if (serviceX.getAperdu()) {
                                 perdu = true;
-                                afficherMessagePerte(); // Affiche immédiatement le message
+                                afficherMessagePerte();
+                                for (Thread threadss : threads) {
+                                    try {
+                                        threadss.join(); // Attend la fin des threads
+                                        if (perdu) {
+                                            // Interrompt tous les threads restants dès qu'une perte est détectée
+                                            for (Thread t : threads) {
+                                                System.exit(1);
+                                            	t.interrupt();
+                                            }
+                                            break; // Arrête la boucle principale
+                                        }
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }// Affiche immédiatement le message
                             }
                         }
                     }
@@ -372,7 +389,7 @@ public class HopitalFantastique {
 
             // Pause entre les intervalles si nécessaire
             try {
-                Thread.sleep(200); // Pause de 200 ms pour simuler un délai
+                Thread.sleep(500); // Pause de 200 ms pour simuler un délai
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

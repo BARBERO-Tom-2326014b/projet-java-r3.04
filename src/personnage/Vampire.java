@@ -27,9 +27,11 @@ public class Vampire extends MortVivant implements VIP {
      * Les vampires subissent une perte accélérée de moral.
      */
     @Override
-    public void diminuerMoralRapide() {
-        setMoral(getMoral() - 15); // VIP perd le moral plus vite
+    public boolean estVip() {
+
+    
         System.out.println(getNomComplet() + " perd rapidement du moral. Moral actuel : " + getMoral());
+        return true;
     }
 
     /**

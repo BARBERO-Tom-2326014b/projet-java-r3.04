@@ -10,6 +10,7 @@ public interface VIP {
      * Méthode à implémenter pour réduire rapidement le moral d'un VIP.
      * Cette méthode est destinée à représenter des situations où un VIP
      * perd du moral plus vite que d'autres entités.
+     * @return 
      */
-    void diminuerMoralRapide();
+    boolean estVip();
 }
