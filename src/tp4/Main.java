@@ -7,6 +7,25 @@ import java.util.Scanner;
 
 public class Main {
 	private static Random random = new Random();
+	
+	public static int verfiEntier(String chaine) throws Exception {
+		boolean isNumeric = true;
+		for (int i = 0; i < chaine.length(); i++) {
+		      if (!Character.isDigit(chaine.charAt(i))) {
+		        isNumeric = false;
+		        break;
+		      }
+		}
+		if(isNumeric) {
+			return Integer.parseInt(chaine);
+		}
+		throw new Exception("Something went wrong!");
+		
+	}
+	
+	
+	
+	
     public static void main(String[] args) {
     	
     	
@@ -15,6 +34,7 @@ public class Main {
         boolean quitter = false;
         ArrayList<Meute> meuteL = new ArrayList<Meute>();
         ArrayList<Lycanthrope> lycanthropeL = new ArrayList<Lycanthrope>();
+        ArrayList<Colonie> colonieL = new ArrayList<Colonie>();
         
         
         Meute meute10= new Meute("Test");
@@ -42,24 +62,65 @@ public class Main {
         meute10.afficherLycanthropesDeLaMeute();
         
         while (!quitter) {
+        	
+        	
+        	for(Lycanthrope l : lycanthropeL) {
+        		int probaF=random.nextInt(4);
+        		if(probaF==0) {
+        			l.changerForce();
+        		}
+        		int probaV=random.nextInt(7);
+        		if(probaV==0) {
+        			l.vieillir();
+        		}
+        		
+        	}
+        	for(Meute m : meuteL) {
+        		int probaR=random.nextInt(6);
+        		if(m.getCouple()!=m.definirCoupleAlpha()) {
+    				m.definirCoupleAlpha();
+    			}
+        		if(probaR==0) {
+        		if(m.getCouple().getCouple()==true) {
+        			for(Lycanthrope l : m.getCouple().realiserReproduction()) {
+        				m.ajouterMembre(l);
+        			}
+        			
+        			}
+        		}
+        	}
+        	
+        	
             System.out.println("\nQue souhaitez-vous faire ?");
             System.out.println("1. Lycanthropes");
             System.out.println("2. Meute");
-            System.out.println("3. Créer colonie");
+            System.out.println("3. Colonie");
             System.out.println("4. Quitter");
             System.out.print("Votre choix : ");
 
-            int choix = scanner.nextInt();
+            String choix = scanner.next();
+            
+            try {
+				int choix21 = verfiEntier(choix);
+			
+            
+     
+            
+           
             scanner.nextLine(); // Consommer le saut de ligne
 
-            switch (choix) {
+            switch (choix21) {
                 case 1:
                 	System.out.println("\nQue souhaitez-vous faire ?");
                     System.out.println("1. Créer lycanthrope");
                     System.out.println("2. Choisir lycanthrope");
                     System.out.println("3. Afficher lycanthrope");
                     System.out.println("4. Quitter");
-                    int choix2 = scanner.nextInt();
+          
+                    
+                    
+                    choix = scanner.next();
+                    int choix2 = verfiEntier(choix);
                     scanner.nextLine();
                     
                     switch(choix2) {
@@ -84,8 +145,11 @@ public class Main {
                                 	System.out.println(cpt+" "+l.getNom());
                                 	cpt+=1;
                                 	}
-                    		int choix3 = scanner.nextInt();
-                            scanner.nextLine();
+                    		
+                    		 choix = scanner.next();
+                             int choix3 = verfiEntier(choix);
+                             scanner.nextLine();
+                    	
                             
 	                        if(choix3!=0) {
 	                        boolean boucle =true;
@@ -94,7 +158,11 @@ public class Main {
 	                            	System.out.println("1. L'ajouter a une meute");
 	                            	System.out.println("2. Retirer d'une meute");
 	                            	System.out.println("3. Quitter");
-	                            	int choix4 = scanner.nextInt();
+	                            	
+	                            	choix = scanner.next();
+	                                int choix4 = verfiEntier(choix);
+	                                scanner.nextLine();
+	                            
 	                            	switch(choix4) {
 	                            	case 1:
 	                            		if(meuteL.size()==0) {
@@ -161,12 +229,17 @@ public class Main {
                     System.out.println("1. Créer Meute");
                     System.out.println("2. Choisir Meute");
                     
-                    int Nom1 = scanner.nextInt();
+                    choix = scanner.next();
+                    int Nom1= verfiEntier(choix);
                     scanner.nextLine();
+                   
+                    
                     switch (Nom1) {
+                    	case 0:
+                    		break;
 	                    case 1:
 	                    	System.out.println("Quel nom voulez-vous donner ?");
-                    		String Nom = scanner.nextLine();
+	                    	String Nom = scanner.nextLine();
                     		Meute meute = new Meute(Nom);
                     		meuteL.add(meute);
                     		System.out.println("La meute a bien été créer !");
@@ -179,18 +252,25 @@ public class Main {
                                 	System.out.println(cpt+" "+m.getNom());
                                 	cpt+=1;
                                 	}
-                    		int choix10 = scanner.nextInt();
+                    		choix = scanner.next();
+                            int choix10 = verfiEntier(choix);
                             scanner.nextLine();
+                          
                             
 	                        if(choix10!=0) {
 	                        	boolean boucle2 =true;
+
+                            	
 	                            while(boucle2) {
 	                            	System.out.println("Vous avez choisi la meute : "+meuteL.get(choix10-1).getNom());
 	                            	System.out.println("0. Quitter");
 	                            	System.out.println("1. Voir les loups dans la meute");
 	                            	System.out.println("2. Créer couple (si possible)");
 	                            	System.out.println("3. Voir Hiérarchie");
-	                            	int choix11 = scanner.nextInt();
+	                            	System.out.println("4. Ajouter à une colonie");
+	                            	choix = scanner.next();
+	                                int choix11= verfiEntier(choix);
+	                                scanner.nextLine();
 	                            	switch(choix11) {
 	                            	case 0:
 	                            		boucle2=false;
@@ -208,10 +288,25 @@ public class Main {
 	                            		meuteL.get(choix10-1).hierarchie();
 	                            		boucle2=false;
 	                            		break;
-	                            	}
+	                            	case 4:
+	                            		cpt=0;
+	                            		System.out.println("Voici les différentes colonie : ");
+                            			for (Colonie c : colonieL) {
+                                        	System.out.println(cpt+" "+c.getNom());
+                                        	cpt+=1;
+                                        	System.out.println("Dans quel colonie voulez-vous l'ajouter ?");
+                                        	int choix5 = scanner.nextInt();
+                                        	colonieL.get(choix5).ajouterMeute(meuteL.get(choix10-1));
+                                        	System.out.println("La meute  "+meuteL.get(choix10-1).getNom()+" a bien été ajouté !");
+                            			}
+                            			break;
+	                            	}break;
 	                            }
 	                        	break;
 	                        	}
+	                        else {
+	                        	break;
+	                        }
 	                        default:
 	                        	System.out.println("Choix invalide. Veuillez réessayer.");
 	                        	
@@ -220,11 +315,84 @@ public class Main {
                     break;
                 default:
                     System.out.println("Choix invalide. Veuillez réessayer.");
-            }
-        }
+                    
+                case 3:
+                	System.out.println("\nQue souhaitez-vous faire ?");
+                	System.out.println("0. Quitter");
+                    System.out.println("1. Afficher colonie");
+                    System.out.println("2. Créer colonie");
+                    System.out.println("3. Choisir colonie");
+                    
+          
+                    
+                    
+                    choix = scanner.next();
+                    int choix23 = verfiEntier(choix);
+                    scanner.nextLine();
+                    switch(choix23) {
+                    	case 0:
+                    		break;
+                    	case 1:
+                    		System.out.println("voici les colonie :");
+                    		for(Colonie c : colonieL) {
+                    			System.out.println(c.getNom());
+                    		}
+                    		break;
+                    	case 2:
+                    		System.out.println("Quel nom voulez-vous choisir ?");
+                    		choix = scanner.next();
+                    		scanner.nextLine();
+                    		Colonie col = new Colonie(choix);
+                    		colonieL.add(col);
+                    		System.out.println("La colonie "+ col.getNom()+" a été créer !");
+                    		break;
+                    	case 3:
+                    		System.out.println("0. Quitter");
+	                    	int cpt=1;
+                    		for (Colonie c : colonieL) {
+                                	System.out.println(cpt+" "+c.getNom());
+                                	cpt+=1;
+                                	}
+                    		choix = scanner.next();
+                            int choix10 = verfiEntier(choix);
+                            scanner.nextLine();
+                          
+                            
+	                        if(choix10!=0) {
+	                        	boolean boucle2 =true;
 
-        scanner.close();
+                            	
+	                            while(boucle2) {
+	                            	System.out.println("Vous avez choisi la meute : "+colonieL.get(choix10-1).getNom());
+	                            	System.out.println("0. Quitter");
+	                            	System.out.println("1. Voir les meutes dans la colonie");
+	                                int choix11= verfiEntier(choix);
+	                                scanner.nextLine();
+	                            	switch(choix11) {
+	                            	case 0:
+	                            		break;
+	                            	case 1:
+	                            		System.out.println("Voici les meute dans la colonie");
+	                            		for(Meute m :colonieL.get(choix10-1).getMeutes()) {
+	                            			System.out.println(m.getNom());
+	                            		}
+	                            		break;
+	                            		
+                    		
+                    }}break;
+                    
+                    
+            }
+            }}} catch (Exception e) {
+				System.out.println( (e.getMessage()));
+				
+			}
+            
+        }
+        scanner.close();  
     }
+        
+    
     
 }
 

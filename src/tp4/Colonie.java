@@ -6,13 +6,9 @@ public class Colonie {
     private List<Meute> meutes;
     private String nom;
 
-    // Constructeur
-    public Colonie() {
-        meutes = new ArrayList<>();
-    }
-
     public Colonie(String nom) {
 		this.nom=nom;
+		 meutes = new ArrayList<>();
 	}
 
 	// Ajouter une meute à la colonie
@@ -26,6 +22,26 @@ public class Colonie {
             meute.afficherLycanthropesDeLaMeute();
         }
     }
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public List<Meute> getMeutes() {
+		return meutes;
+	}
+
+	public void setMeutes(List<Meute> meutes) {
+		this.meutes = meutes;
+	}
+
+	
+    
+    
 
 }
 

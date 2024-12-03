@@ -22,7 +22,7 @@ public class Meute {
     }
 
     // Définir le couple Alpha (mâle et femelle les plus forts)
-    public void definirCoupleAlpha() {
+    public Couple definirCoupleAlpha() {
         Lycanthrope meilleurMâle = null;
         Lycanthrope meilleureFemelle = null;
 
@@ -52,6 +52,7 @@ public class Meute {
         } else {
             System.out.println("Impossible de définir un couple Alpha: Mâle et/ou Femelle non trouvés.");
         }
+        return couple;
     }
 
     // Méthode pour afficher les membres de la meute
@@ -68,6 +69,8 @@ public class Meute {
     public String getNom() {
         return this.nom;
     }
+    
+    
 
     public List<Lycanthrope> getLycanthropes() {
         return this.lycanthropes;
@@ -117,19 +120,29 @@ public class Meute {
 
 	        // Attribuer les rangs en fonction de la position
 	        if (i == 0) {
-	            lycanthrope.setRang("Alpha");
+	            lycanthrope.setRang("α");
 	        } else if (i < total / 3) {
-	            lycanthrope.setRang("Beta");
+	            lycanthrope.setRang("β");
 	        } else if (i < (2 * total) / 3) {
-	            lycanthrope.setRang("Omega");
+	            lycanthrope.setRang("ε");
 	        } else {
-	            lycanthrope.setRang("Zeta");
+	            lycanthrope.setRang("ω");
 	        }
 
 	        // Afficher le rang
 	        System.out.println(lycanthrope.getNom() + " - Rang : " + lycanthrope.getRang());
 	    }
 	}
+
+	public Couple getCouple() {
+		return this.couple;
+	}
+
+	public void setCouple(Couple couple) {
+		this.couple = couple;
+	}
+	
+	
 		
 	}
 

@@ -17,7 +17,8 @@ public class Lycanthrope {
 
     // Constructeur
     public Lycanthrope(boolean sexe, int force, float facteurDomination, int niveau, String nom) {
-    	int choix=1;
+    	//int choix=random.nextInt(3);
+    	int choix =random.nextInt(3);
     	switch (choix) {
     	case 0:
     		this.categorieAge = "Jeune";
@@ -43,6 +44,32 @@ public class Lycanthrope {
     // Getter pour le rang
     public String getRang() {
         return this.rang;
+    }
+    
+    public void vieillir() {
+    	if(this.getCategorieAge()=="Jeune") {
+    		this.setCategorieAge("Adulte");
+    	}
+    	else if (this.getCategorieAge()=="Adulte"){
+    		this.setCategorieAge("Vieux");
+    	}
+    	else {
+    		this.setCategorieAge("Vieux");
+    	}
+    	System.out.println("Le lycanthrope"+this.getNom()+" a viellit");
+    }
+    
+    public void changerForce() {
+    	int force = this.getForce();
+    	int proba = random.nextInt(2);
+    	if(proba==0) {
+    	this.setForce(force-5);
+    	System.out.println("La force de "+this.getNom()+" a baisser de 5");
+    	}
+    	else {
+    		this.setForce(force+5);
+    	}
+    	System.out.println("La force de "+this.getNom()+" a augmenter de 5");
     }
 
 
