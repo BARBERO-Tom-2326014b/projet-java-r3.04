@@ -16,6 +16,7 @@ class TestCreature {
     private Elfe elfe;
     private Lycanthrope loupG;
     private List<Creature> proches;
+    private double chanceDeContamination = Math.random(); // Génère un nombre entre 0 et 1
 
     @BeforeEach
     void setUp() {
@@ -28,6 +29,7 @@ class TestCreature {
         proches = new ArrayList<>();
         proches.add(elfe);
         proches.add(loupG);
+
     }
 
     @Test
@@ -65,7 +67,7 @@ class TestCreature {
         elfe.hurler(proches);
         ByteArrayOutputStream consoleOutput = new ByteArrayOutputStream();
         System.setOut(new PrintStream(consoleOutput));
-        elfe.sEmporter(proches);
+        elfe.sEmporter(proches,chanceDeContamination);
         assertTrue(consoleOutput.toString().contains("s'emporte avec fureur"));
         
     }
@@ -109,7 +111,7 @@ void testSEmporterContamineProches() throws Exception{
     System.setOut(new PrintStream(consoleOutput)); // Rediriger System.out
 
     // Cas 1 : Le loup n'est pas malade, il ne devrait pas contaminer
-    loupG.sEmporter(proches); // Appelez la méthode que vous testez
+    loupG.sEmporter(proches,chanceDeContamination); // Appelez la méthode que vous testez
 
     // Vérifier si la phrase de non-contamination a été affichée
     //assertTrue(consoleOutput.toString().contains(loupG.getNomComplet() + " n'est pas malade donc ne contamine pas"));
@@ -119,7 +121,7 @@ void testSEmporterContamineProches() throws Exception{
 	
     // Cas 2 : Le loupG tombe malade et il devrait contaminer
     loupG.tomberMalade(zpl);
-    loupG.sEmporter(proches); // Appeler sEmporter
+    loupG.sEmporter(proches,1); // Appeler sEmporter
     // Vérifier si la phrase de contamination a été affichée
     assertTrue(consoleOutput.toString().contains(loupG.getNomComplet() + " contamine " + elfe.getNomComplet() + " avec " + zpl + " en s'emportant."));
     
@@ -138,7 +140,7 @@ void testSEmporterContaminePasProches() throws Exception{
     loupG.hurler(proches);
     
 	elfe.tomberMalade(zpl);
-	elfe.sEmporter(proches); // Appeler sEmporter
+	elfe.sEmporter(proches,0); // Appeler sEmporter
 	assertTrue(consoleOutput.toString().contains("Pas de contamination cette fois. "));
 	
 	// Réinitialiser la sortie après le test
@@ -146,7 +148,6 @@ void testSEmporterContaminePasProches() throws Exception{
 	}
 
 }
-
 
 class TestMaladie {
 	
@@ -173,8 +174,6 @@ class TestMaladie {
 
     @Test
     void testRendreUneCreatureMalade() {
-        System.out.println("=== Test : rendre une créature malade ===");
-
         for (Maladie maladie : maladies) {
             orque.tomberMalade(maladie);
 
@@ -186,8 +185,6 @@ class TestMaladie {
 
     @Test
     void testAugmentationEtDiminutionNiveauViaCreature() {
-        System.out.println("=== Test : augmentation et diminution des niveaux de maladies via une créature ===");
-
         Maladie maladie = Maladie.creerMaladie("MDC");
         elfe.tomberMalade(maladie);
 
@@ -204,8 +201,6 @@ class TestMaladie {
 
     @Test
     void testChangementDeNiveauViaCreature() {
-        System.out.println("=== Test : changement de niveau de maladie via une créature ===");
-
         Maladie maladie = Maladie.creerMaladie("FOMO");
         orque.tomberMalade(maladie);
 
@@ -226,8 +221,6 @@ class TestMaladie {
 
     @Test
     void testNiveauLethalPourUneCreature() {
-        System.out.println("=== Test : niveau létal pour une créature ===");
-
         Maladie maladie = Maladie.creerMaladie("ZPL");
         elfe.tomberMalade(maladie);
 
@@ -242,8 +235,6 @@ class TestMaladie {
 
     @Test
     void testPlusieursMaladiesPourUneCreature() {
-        System.out.println("=== Test : gestion de plusieurs maladies pour une créature ===");
-
         orque.tomberMalade(Maladie.creerMaladie("DRS"));
         orque.tomberMalade(Maladie.creerMaladie("PEC"));
 
@@ -255,5 +246,57 @@ class TestMaladie {
         assertTrue(maladiesOrque.stream().anyMatch(m -> m.getNomAbrege().equals("PEC")), 
             "L'orque devrait avoir la maladie 'PEC'.");
     }
-    
+}
+class TestServiceMedical {
+    	
+    private ServiceMedicalStandard hopital;
+    private Crypte crypte;
+    private CentreDeQuarantaine quarante;
+    private Elfe elfe;
+        
+    @BeforeEach
+    void setUp() {
+        hopital = new ServiceMedicalStandard("hopital",200,50,500000);
+        crypte = new Crypte("crypte", 300, 20, 300000, 5, 21);
+        quarante = new CentreDeQuarantaine("quarantaine", 150, 10, 250000, true);
+        elfe = new Elfe("elwin", "M", 52, 1.6, 20);     
+        };    
+        
+        @Test
+        void testAfficheCara() {
+        	assertEquals("elwin", elfe.getNomComplet());
+            assertEquals("M", elfe.getSexe());
+            assertEquals(52, elfe.getPoids());
+            assertEquals(1.6, elfe.getTaille());
+            assertEquals(20, elfe.getAge());
+            assertEquals(0, elfe.getMaladies().size());
+        }
+        
+        @Test
+        public void testAjoutEtRetraitCreature() {
+            hopital.getCreatures().add(elfe);
+            assertEquals(1, hopital.getNombreCreatures());
+            assertEquals("elwin", hopital.getCreatures().get(0).getNomComplet());
+
+            hopital.retirerCreature(elfe);
+            assertEquals(0, hopital.getNombreCreatures());
+        }
+        
+        /*@Test
+        public void testSoins() {
+        	Maladie fomo = Maladie.creerMaladie("FOMO"); // Syndrome fear of missing out
+        	elfe.tomberMalade(fomo);
+        	crypte.getCreatures().add(elfe);
+
+            System.out.println((elfe.getMaladies()));
+            crypte.soignerCreatures(); 
+            assertEquals(1, elfe.getMaladies().size());
+        }*/
+        
+        @Test
+        public void testReviserBudget() {
+        	quarante.reviserBudget(600);
+            assertEquals(600, quarante.getBudget());
+        }
+      
 }

@@ -12,6 +12,7 @@ public abstract class Creature {
     private int moral;//donne la plus importante
     private List<Maladie> maladies;
     private int hurlementsConsecutifs = 0; // Compteur de hurlements consécutifs
+    private double chanceDeContamination = Math.random(); // Génère un nombre entre 0 et 1
 
     // Constructeur de base
     public Creature(String nomComplet, String sexe, double poids, double taille, int age) {
@@ -74,7 +75,7 @@ public abstract class Creature {
     
     public void hurler(List<Creature> proches) {
     	if (hurlementsConsecutifs>1) {
-    		sEmporter(proches);
+    		sEmporter(proches,chanceDeContamination);
     	}  
     	else if (moral <= 10) {
         System.out.println(nomComplet + " hurle de désespoir !");
@@ -83,20 +84,18 @@ public abstract class Creature {
     }
 
     // S’emporter : alternative aux hurlements consécutifs
-    public void sEmporter(List<Creature> proches) {
+    public void sEmporter(List<Creature> proches,double chanceDeContamination) {
     	if (hurlementsConsecutifs>1) {
     		System.out.println(nomComplet + " s'emporte avec fureur !");
     	}   
     	else {
             System.out.println(nomComplet + " ne peut pas s'emporter car il n'a pas assez hurlé (hurlementsConsecutifs = " + hurlementsConsecutifs + ").");
-        }
-    	// Ajout d'une chance de contamination
-        double chanceDeContamination = Math.random(); // Génère un nombre entre 0 et 1
-        if (chanceDeContamination > 0 && !proches.isEmpty()) { // 75% de chance de contaminer
+        }   
+        if (chanceDeContamination > 0.25 && !proches.isEmpty()) { // 75% de chance de contaminer
             contaminerAutres(proches);
         }
         else {
-            if (chanceDeContamination <= 0) {
+            if (chanceDeContamination <= 0.25) {
                 System.out.println("Pas de contamination cette fois. ");
             }
             if (proches.isEmpty()) {
