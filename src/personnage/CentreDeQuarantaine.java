@@ -39,4 +39,10 @@ public class CentreDeQuarantaine extends ServiceMedical {
     public void reviserBudget(double newBudget) {
         setBudget(newBudget);
     }
+
+	@Override
+	public void reviserBudget() {
+		// TODO Auto-generated method stub
+		
+	}
 }
