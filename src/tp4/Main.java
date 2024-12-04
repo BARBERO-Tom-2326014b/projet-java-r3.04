@@ -19,7 +19,7 @@ public class Main {
 		if(isNumeric) {
 			return Integer.parseInt(chaine);
 		}
-		throw new Exception("Something went wrong!");
+		throw new Exception("Vous devez rentrer un entier !");
 		
 	}
 	
@@ -73,7 +73,10 @@ public class Main {
         		if(probaV==0) {
         			l.vieillir();
         		}
-        		
+        		int probaH=random.nextInt(10);
+        		if(probaH==0) {
+        			l.transformerHumain(l.getMeute());
+        		}
         	}
         	for(Meute m : meuteL) {
         		int probaR=random.nextInt(6);
@@ -370,16 +373,19 @@ public class Main {
 	                                scanner.nextLine();
 	                            	switch(choix11) {
 	                            	case 0:
+	                            		boucle2=false;
 	                            		break;
 	                            	case 1:
 	                            		System.out.println("Voici les meute dans la colonie");
 	                            		for(Meute m :colonieL.get(choix10-1).getMeutes()) {
 	                            			System.out.println(m.getNom());
 	                            		}
+	                            		boucle2=false;
 	                            		break;
 	                            		
                     		
-                    }}break;
+                    }
+	                            	}break;
                     
                     
             }
