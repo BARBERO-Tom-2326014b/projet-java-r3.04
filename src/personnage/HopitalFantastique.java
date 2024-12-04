@@ -13,6 +13,7 @@ public class HopitalFantastique {
     private List<Medecin> medecins;
     public static boolean perdu = false;
     private static List<Creature> ListeDeCreatureEnAttente;
+    private int nbTours = 0;
 
     /**
      * Constructeur de l'hôpital fantastique.
@@ -393,7 +394,12 @@ public class HopitalFantastique {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            nbTours++;
         }
+        if(!perdu)
+        afficherMessageVictoire();
+
+        
     }
 
 
@@ -422,6 +428,31 @@ public class HopitalFantastique {
         // Ligne inférieure du cadre
         System.out.println(bordure);
     }
+    
+    private void afficherMessageVictoire() {
+        String message = "vous avez GAGNER";
+        int largeur = message.length() + 6; // Ajuste la largeur du cadre en fonction du message
+
+        // Ligne supérieure du cadre
+        String bordure = "#".repeat(largeur);
+        System.out.println(bordure);
+
+        // Ligne vide avec des marges
+        System.out.println("#" + " ".repeat(largeur - 2) + "#");
+
+        // Ligne contenant le message centré
+        int espaces = (largeur - 2 - message.length()) / 2;
+        System.out.println("#" + " ".repeat(espaces) + message + " ".repeat(espaces) + "#");
+
+        // Ligne vide avec des marges
+        System.out.println("#" + " ".repeat(largeur - 2) + "#");
+
+        // Ligne inférieure du cadre
+        System.out.println(bordure);
+        
+        System.out.println("\nVous avez reussi a gerer l'hopital pendant : " + nbTours + " Bravo !");
+    }
+
 
    
 }
