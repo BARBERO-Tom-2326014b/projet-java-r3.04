@@ -80,7 +80,7 @@ public class Couple {
         int nombreDeJeunes = (int) (Math.random() * 7) + 1; // Nombre aléatoire entre 1 et 7
         for (int i = 0; i < nombreDeJeunes; i++) {
             // Créer un nouveau lycanthrope avec des caractéristiques aléatoires
-            Lycanthrope jeune = new Lycanthrope(Math.random() > 0.5, random.nextInt(100), random.nextFloat(10), random.nextInt(10), "nom" + i);
+            Lycanthrope jeune = new Lycanthrope(Math.random() > 0.5, random.nextInt(100), random.nextFloat(10), random.nextInt(10), "nom" + i,random.nextInt(3));
             jeune.setCategorieAge("Jeune");
             portee.add(jeune);
         }
