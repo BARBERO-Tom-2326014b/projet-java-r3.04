@@ -56,15 +56,22 @@ public class TestHopitalFantastique {
 		ByteArrayOutputStream consoleOutput = new ByteArrayOutputStream();
 	    System.setOut(new PrintStream(consoleOutput)); // Rediriger System.out
 	    
-	    for (ServiceMedical service : servicesMedicals) {
+	    for (ServiceMedical service : hopitalFantastique.listerServices()) {
             service.afficherCaracteristiques();
         }
 	   
 	    
-		assertTrue(consoleOutput.toString().contains("Nom: " + elfe.getNomComplet()));
-		assertTrue(consoleOutput.toString().contains("Nom: " + hommeB.getNomComplet()));
+		assertTrue(consoleOutput.toString().contains("Créature : " + elfe.getNomComplet()));
+		assertTrue(consoleOutput.toString().contains("Créature : " + hommeB.getNomComplet()));
 		
 		// Réinitialiser la sortie après le test
 		System.setOut(System.out); 
 	}
+
+
+
+
+
+
+
 }
