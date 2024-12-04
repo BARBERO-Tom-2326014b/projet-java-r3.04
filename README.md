@@ -39,7 +39,7 @@ medecin qui peuvent etre a la pause café, argent qui change de maniere aleatoir
 
 ---
 
-### Étapes  
+## **Étapes **  
 1. Cloner le dépôt Git :  
    ```bash  
    git clone https://github.com/BARBERO-Tom-2326014b/projet-java-r3.04
@@ -88,6 +88,7 @@ Voici la structure de votre projet :
 ├── README.md                    # Fichier actuel  
 ├── JUnit 5/                     # Tests unitaires utilisant JUnit 5  
 └── JRE System Library [jre]     # Bibliothèque Java Runtime Environment  
+```
 
 ---
 
@@ -105,7 +106,7 @@ Voici la structure de votre projet :
 - Quitter :
 
 
-###Tribu de loups alpha
+### Tribu de loups alpha
 - Former une meute
 - établir la dominance territoriale.
 
