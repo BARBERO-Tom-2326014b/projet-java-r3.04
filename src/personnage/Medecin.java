@@ -171,7 +171,12 @@ public class Medecin extends Creature {
 	                Creature creature = choisirCreature(scanner, serviceDepart);
 	                System.out.println("Choisissez le service médical de destination :");
 	                ServiceMedical serviceArrivee = choisirService(scanner, services);
-	                transfererCreature(serviceDepart, serviceArrivee, creature);
+	                if (HopitalFantastique.verifieCompatibilite(creature, serviceArrivee)){
+		                transfererCreature(serviceDepart, serviceArrivee, creature);
+	                }
+	                else {
+	                	System.out.println("Desoler votre creature n'est pas du meme type que les creations qui sont dans le service choisis");
+	                }
 	                break;
 	                
 	            case 5: // Réviser le budget
