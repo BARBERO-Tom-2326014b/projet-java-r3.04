@@ -84,5 +84,19 @@ class TestMeute {
         assertFalse(meute.getLycanthropes().contains(lycanthrope1));
         assertTrue(meute.getLycanthropes().contains(lycanthrope2));
     }
+    
+    @Test
+    void testRealiserReproduction() {
+    	// Ajouter des lycanthropes à la meute
+        meute.ajouterMembre(lycanthrope1);
+        meute.ajouterMembre(lycanthrope2);
+        
+        Couple couple = meute.definirCoupleAlpha();
+     // Vérifier que le couple Alpha a bien été défini
+        assertNotNull(couple);
+     // Vérifier que reproduction fonctionne
+        List<Lycanthrope> portee=couple.realiserReproduction();
+        assertNotNull(portee);
+    }
 }
 
