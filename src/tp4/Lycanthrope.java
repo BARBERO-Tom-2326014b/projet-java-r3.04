@@ -117,9 +117,10 @@ public class Lycanthrope {
      * @param meute La meute à laquelle le lycanthrope appartient
      */
     public void transformerHumain(Meute meute) {
-        if (niveau > 5) {
+        if (force < 60) {
             System.out.println(nom + " se transforme en humain. Il ne fait donc plus partie de la meute.");
             meute.enleverLycanthropes(this);
+            this.setMeute(null);
         } else {
             System.out.println(nom + " ne peut pas se transformer en humain.");
         }
