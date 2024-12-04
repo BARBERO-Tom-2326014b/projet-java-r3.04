@@ -97,12 +97,12 @@ Voici la structure de votre projet :
 ### Hôpital fantastique
 - Admettre une créature en tant que patient.
 - lancer le jeux avec un nombre de tours :
--- intervalles de temps simuler : ( nombre de tours ou on joue )
--- 1. Examiner un service médical ( choisir un service (liste des services avec le nombre de creatures dans chaque service apparait ) )
--- 2. Soigner les créatures d'un service médical ( choisir un service (liste des services avec le nombre de creatures dans chaque service apparait ), choisir une creature (la liste des creatures avec leurs maladie apparait ) puis cela a 90% de chance de soigner une des maladies du patient)
--- 3. Réviser le budget d'un service médical ( lui rajouter 10000 de budjet )
--- 4. Transférer une créature entre deux services médicaux ( service de depart et d'arriver)
--- 5. Acceuillir un nouveau patient (si un patient arrive et qu'il attend devant l'hopital on peut choisir de l'integrer dans un service )
+- - intervalles de temps simuler : ( nombre de tours ou on joue )
+- - 1. Examiner un service médical ( choisir un service (liste des services avec le nombre de creatures dans chaque service apparait ) )
+- - 2. Soigner les créatures d'un service médical ( choisir un service (liste des services avec le nombre de creatures dans chaque service apparait ), choisir une creature (la liste des creatures avec leurs maladie apparait ) puis cela a 90% de chance de soigner une des maladies du patient)
+- - 3. Réviser le budget d'un service médical ( lui rajouter 10000 de budjet )
+- - 4. Transférer une créature entre deux services médicaux ( service de depart et d'arriver)
+- - 5. Acceuillir un nouveau patient (si un patient arrive et qu'il attend devant l'hopital on peut choisir de l'integrer dans un service )
 - Quitter :
 
 
