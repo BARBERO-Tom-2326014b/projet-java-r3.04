@@ -42,9 +42,8 @@ public class Lycanthrope {
      * @param niveau Le niveau du lycanthrope (critère de qualité)
      * @param nom Le nom du lycanthrope
      */
-    public Lycanthrope(boolean sexe, int force, float facteurDomination, int niveau, String nom) {
-        int choix = random.nextInt(3);
-        switch (choix) {
+    public Lycanthrope(boolean sexe, int force, float facteurDomination, int niveau, String nom, int age) {
+        switch (age) {
             case 0:
                 this.categorieAge = "Jeune";
                 break;
@@ -233,10 +232,10 @@ public class Lycanthrope {
     public void afficherCaracteristiques() {
         if (sexe) {
             System.out.println("Lycanthrope [sexe= Mâle, categorieAge=" + this.categorieAge + ", force=" + force + ", rang=" + rang
-                    + ", niveau=" + niveau + ", nom=" + nom + "]");
+                    + ", niveau=" + niveau + ", nom=" + nom + ", age=" + categorieAge +"]");
         } else {
             System.out.println("Lycanthrope [sexe= Femelle, categorieAge=" + this.categorieAge + ", force=" + force + ", rang=" + rang
-                    + ", niveau=" + niveau + ", nom=" + nom + "]");
+                    + ", niveau=" + niveau + ", nom=" + nom +", age=" + categorieAge + "]");
         }
     }
 

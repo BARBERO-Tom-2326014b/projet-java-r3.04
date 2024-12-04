@@ -38,14 +38,14 @@ public class Main {
         
         
         Meute meute10= new Meute("Test");
-        Lycanthrope lycan10 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Tom");
-        Lycanthrope lycan11 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Enzo");
-        Lycanthrope lycan12 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Mathias");
-        Lycanthrope lycan13 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Evan");
-        Lycanthrope lycan14 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Lucas");
-        Lycanthrope lycan17 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Tim");
-        Lycanthrope lycan15 = new Lycanthrope(false, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Test1");
-        Lycanthrope lycan16 = new Lycanthrope(false, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Test2");
+        Lycanthrope lycan10 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Tom",random.nextInt(3));
+        Lycanthrope lycan11 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Enzo",random.nextInt(3));
+        Lycanthrope lycan12 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Mathias",random.nextInt(3));
+        Lycanthrope lycan13 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Evan",random.nextInt(3));
+        Lycanthrope lycan14 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Lucas",random.nextInt(3));
+        Lycanthrope lycan17 = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Tim",random.nextInt(3));
+        Lycanthrope lycan15 = new Lycanthrope(false, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Test1",random.nextInt(3));
+        Lycanthrope lycan16 = new Lycanthrope(false, random.nextInt(100), random.nextFloat(10), random.nextInt(10),"Test2",random.nextInt(3));
         meute10.ajouterMembre(lycan10);
         meute10.ajouterMembre(lycan11);
         meute10.ajouterMembre(lycan12);
@@ -128,12 +128,12 @@ public class Main {
                     		System.out.println("nQuel nom voulez-vous donner ?");
                     		String Nom = scanner.nextLine();
                             if(random.nextInt(3)==1) {
-	                            Lycanthrope lycan = new Lycanthrope(false, random.nextInt(100), random.nextFloat(10),  random.nextInt(10),Nom);
+	                            Lycanthrope lycan = new Lycanthrope(false, random.nextInt(100), random.nextFloat(10),  random.nextInt(10),Nom,random.nextInt(3));
 	                            lycanthropeL.add(lycan);
 	                            lycan.afficherCaracteristiques();
                             	}
                             else {
-                            	Lycanthrope lycan = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),Nom);
+                            	Lycanthrope lycan = new Lycanthrope(true, random.nextInt(100), random.nextFloat(10), random.nextInt(10),Nom,random.nextInt(3));
                             	lycanthropeL.add(lycan);
                             	lycan.afficherCaracteristiques();
                             	}
