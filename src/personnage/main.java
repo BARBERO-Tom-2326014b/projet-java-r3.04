@@ -23,41 +23,54 @@ public class main {
         boolean quitter = false;
 
         System.out.println("Bienvenue dans Fantasy Hospital !");
+        
         while (!quitter) {
-            // Afficher le menu principal
-            System.out.println("\nQue souhaitez-vous faire ?");
-            System.out.println("1. Afficher les statistiques de l'hôpital");
-            //System.out.println("2. Admettre une créature dans un service");
-            System.out.println("2. Passer la main aux médecins (simulation)");
-            System.out.println("3. Quitter");
-            System.out.print("Votre choix : ");
+        	try {
+                System.out.println("\nQue souhaitez-vous faire ?");
+                System.out.println("1. Afficher les statistiques de l'hôpital");
+                System.out.println("2. Passer la main aux médecins (simulation)");
+                System.out.println("3. Quitter");
+                System.out.print("Votre choix : ");
 
-            int choix = scanner.nextInt();
-            scanner.nextLine(); // Consommer le saut de ligne
+                String choix = scanner.nextLine(); // Lire l'entrée sous forme de chaîne
+                int choix21;
 
-            switch (choix) {
-                case 1:
-                    hopital.afficherStatistiques();
-                    break;
-                    /*
-                case 2:
-                    admettreCreature(scanner, hopital);
-                    break; */
-                case 2:
-                    System.out.print("Combien d'intervalles de temps simuler ? ");
-                    int intervalle = scanner.nextInt();
-                    hopital.gestionTemps(intervalle);
-                    break;
-                case 3:
-                    System.out.println("Merci d'avoir joué ! À bientôt.");
-                    quitter = true;
-                    break;
-                default:
-                    System.out.println("Choix invalide. Veuillez réessayer.");
+                // Vérifier que l'entrée est un entier valide
+                try {
+                    choix21 = Integer.parseInt(choix); // Convertir la chaîne en entier
+                } catch (NumberFormatException e) {
+                    System.out.println("Entrée invalide. Veuillez entrer un nombre entre 1 et 3.");
+                    continue; // Recommencer la boucle
+                }
+
+                // Gérer les choix de l'utilisateur
+                switch (choix21) {
+                    case 1:
+                        hopital.afficherStatistiques();
+                        break;
+
+                    case 2:
+                        System.out.print("Combien d'intervalles de temps simuler ? ");
+                        try {
+                            int intervalle = Integer.parseInt(scanner.nextLine()); // Lire le nombre d'intervalles
+                            hopital.gestionTemps(intervalle);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Entrée invalide. Veuillez entrer un nombre valide pour l'intervalle de temps.");
+                        }
+                        break;
+
+                    case 3:
+                        System.out.println("Merci d'avoir joué ! À bientôt.");
+                        quitter = true; // Quitter la boucle
+                        break;
+
+                    default:
+                        System.out.println("Choix invalide. Veuillez entrer un nombre entre 1 et 3.");
+                }
+            } catch (Exception e) {
+                System.out.println("Une erreur est survenue : " + e.getMessage());
             }
         }
-
-        scanner.close();
     }
 
     /**
@@ -118,6 +131,21 @@ public class main {
         // Ajouter les créatures aux services appropriés
         // Ces créatures pourraient être ajoutées à d'autres services en fonction de leurs caractéristiques
     }
+    
+    public static int verfiEntier(String chaine) throws Exception {
+		boolean isNumeric = true;
+		for (int i = 0; i < chaine.length(); i++) {
+		      if (!Character.isDigit(chaine.charAt(i))) {
+		        isNumeric = false;
+		        break;
+		      }
+		}
+		if(isNumeric) {
+			return Integer.parseInt(chaine);
+		}
+		throw new Exception("Vous avez mis autre chose qu'un chiffre");
+		
+	}
     
     /*
     
